@@ -24,14 +24,16 @@ namespace CodeBase.Data
 
         [Serializable]
         public class ViewsContent
-        {
-         
+        { 
+            public GameObject Levelcolumn => levelcolumn ;
+            [SerializeField] private GameObject levelcolumn;
         }
 
         [Serializable]
         public class SettingsContent
         {
-            
+            public LevelConfig LevelConfig => levelConfig;
+            [SerializeField] private LevelConfig levelConfig;
         }
     }
 }

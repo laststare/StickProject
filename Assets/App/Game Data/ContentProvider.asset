@@ -12,3 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d83108c3b1a46018c4bb903826a9651, type: 3}
   m_Name: ContentProvider
   m_EditorClassIdentifier: 
+  views:
+    levelcolumn: {fileID: 5740262576617682235, guid: 6c05b0e7be03f4cf1be9dc4b926e416e, type: 3}
+  settings:
+    levelConfig: {fileID: 11400000, guid: f31cc783aed8d4883bc30600be8ee0f5, type: 2}

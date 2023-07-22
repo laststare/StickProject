@@ -1,5 +1,7 @@
 ﻿using CodeBase.Data;
+using CodeBase.Game.Level;
 using External.Framework;
+using External.Reactive;
 using UnityEngine;
 
 namespace CodeBase.Game
@@ -12,9 +14,27 @@ namespace CodeBase.Game
             public RectTransform uiRoot;
         }
         private readonly Ctx _ctx;
+        private LevelBuilderEntity _levelBuilderEntity;
+
+        private readonly ReactiveEvent<int> _startLevel = new();
+        private readonly ReactiveTrigger _finishLevel = new();
         public GameEntity(Ctx ctx)
         {
             _ctx = ctx;
+            CreateLevelBuilder();
+            _startLevel.Notify(0);
+        }
+
+        private void CreateLevelBuilder()
+        {
+            var levelBuilderEntityCtx = new LevelBuilderEntity.Ctx
+            {
+                contentProvider = _ctx.contentProvider,
+                startLevel = _startLevel,
+                finishLevel = _finishLevel
+            };
+            _levelBuilderEntity = new LevelBuilderEntity(levelBuilderEntityCtx);
+            AddUnsafe(_levelBuilderEntity);
         }
     }
 }
