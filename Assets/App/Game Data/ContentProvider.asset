@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   views:
     levelcolumn: {fileID: 5740262576617682235, guid: 6c05b0e7be03f4cf1be9dc4b926e416e, type: 3}
+    cameraView: {fileID: 6958449939205910844, guid: a52c0c12e968a41ba934997429e80eda, type: 3}
   settings:
     levelConfig: {fileID: 11400000, guid: f31cc783aed8d4883bc30600be8ee0f5, type: 2}

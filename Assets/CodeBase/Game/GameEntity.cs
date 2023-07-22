@@ -1,4 +1,5 @@
 ﻿using CodeBase.Data;
+using CodeBase.Game.Gameplay;
 using CodeBase.Game.Level;
 using External.Framework;
 using External.Reactive;
@@ -15,6 +16,7 @@ namespace CodeBase.Game
         }
         private readonly Ctx _ctx;
         private LevelBuilderEntity _levelBuilderEntity;
+        private GameplayEntity _gameplayEntity;
 
         private readonly ReactiveEvent<int> _startLevel = new();
         private readonly ReactiveTrigger _finishLevel = new();
@@ -22,6 +24,7 @@ namespace CodeBase.Game
         {
             _ctx = ctx;
             CreateLevelBuilder();
+            CreateGameplayEntity();
             _startLevel.Notify(0);
         }
 
@@ -35,6 +38,18 @@ namespace CodeBase.Game
             };
             _levelBuilderEntity = new LevelBuilderEntity(levelBuilderEntityCtx);
             AddUnsafe(_levelBuilderEntity);
+        }
+
+        private void CreateGameplayEntity()
+        {
+            var gameplayEntityCtx = new GameplayEntity.Ctx()
+            {
+                contentProvider = _ctx.contentProvider,
+                startLevel = _startLevel,
+                finishLevel = _finishLevel
+            };
+            _gameplayEntity = new GameplayEntity(gameplayEntityCtx);
+            AddUnsafe(_gameplayEntity);
         }
     }
 }

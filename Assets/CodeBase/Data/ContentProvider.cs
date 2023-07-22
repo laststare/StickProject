@@ -1,4 +1,5 @@
 ﻿using System;
+using CodeBase.Game.Gameplay.Camera;
 using UnityEngine;
 
 namespace CodeBase.Data
@@ -25,8 +26,10 @@ namespace CodeBase.Data
         [Serializable]
         public class ViewsContent
         { 
-            public GameObject Levelcolumn => levelcolumn ;
+            public GameObject Levelcolumn => levelcolumn;
+            public CameraView CameraView => cameraView;
             [SerializeField] private GameObject levelcolumn;
+            [SerializeField] private CameraView cameraView;
         }
 
         [Serializable]
