@@ -10,8 +10,8 @@ namespace CodeBase.Game.Gameplay.Camera
         public struct Ctx
         {
             public ContentProvider contentProvider;
-            public ReactiveEvent<int> startLevel;
-            public ReactiveTrigger finishLevel;
+            public IReadOnlyReactiveTrigger startLevel;
+            public IReadOnlyReactiveTrigger finishLevel;
         }
 
         private readonly Ctx _ctx;

@@ -1,6 +1,7 @@
 ﻿using CodeBase.Data;
 using CodeBase.Game.Gameplay;
 using CodeBase.Game.Level;
+using CodeBase.Game.MainMenu;
 using External.Framework;
 using External.Reactive;
 using UnityEngine;
@@ -17,15 +18,17 @@ namespace CodeBase.Game
         private readonly Ctx _ctx;
         private LevelBuilderEntity _levelBuilderEntity;
         private GameplayEntity _gameplayEntity;
+        private MainMenuEntity _mainMenuEntity;
 
-        private readonly ReactiveEvent<int> _startLevel = new();
+        private readonly ReactiveTrigger _startGame = new();
+        private readonly ReactiveTrigger _startLevel = new();
         private readonly ReactiveTrigger _finishLevel = new();
         public GameEntity(Ctx ctx)
         {
             _ctx = ctx;
             CreateLevelBuilder();
             CreateGameplayEntity();
-            _startLevel.Notify(0);
+            CreateMainMenu();
         }
 
         private void CreateLevelBuilder()
@@ -46,10 +49,25 @@ namespace CodeBase.Game
             {
                 contentProvider = _ctx.contentProvider,
                 startLevel = _startLevel,
-                finishLevel = _finishLevel
+                finishLevel = _finishLevel,
+                uiRoot = _ctx.uiRoot,
+                startGame = _startGame
             };
             _gameplayEntity = new GameplayEntity(gameplayEntityCtx);
             AddUnsafe(_gameplayEntity);
+        }
+
+        private void CreateMainMenu()
+        {
+            var mainMenuEntityCtx = new MainMenuEntity.Ctx()
+            {
+                contentProvider = _ctx.contentProvider,
+                uiRoot = _ctx.uiRoot,
+                startLevel = _startLevel,
+                startGame = _startGame
+            };
+            _mainMenuEntity = new MainMenuEntity(mainMenuEntityCtx);
+            AddUnsafe(_mainMenuEntity);
         }
     }
 }

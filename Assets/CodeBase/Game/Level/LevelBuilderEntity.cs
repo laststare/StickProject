@@ -9,7 +9,7 @@ namespace CodeBase.Game.Level
         public struct Ctx
         {
             public ContentProvider contentProvider;
-            public ReactiveEvent<int> startLevel;
+            public ReactiveTrigger startLevel;
             public ReactiveTrigger finishLevel;
         }
 

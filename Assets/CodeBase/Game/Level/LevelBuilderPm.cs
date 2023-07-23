@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using CodeBase.Data;
 using External.Framework;
 using External.Reactive;
@@ -11,42 +12,44 @@ namespace CodeBase.Game.Level
         public struct Ctx 
         {
             public ContentProvider contentProvider;
-            public ReactiveEvent<int> startLevel;
-            public ReactiveTrigger finishLevel;
+            public IReadOnlyReactiveTrigger startLevel;
+            public IReadOnlyReactiveTrigger finishLevel;
         }
 
         private readonly Ctx _ctx;
-        private GameObject[] _levelColumns;
+        private readonly List<GameObject> _levelColumns = new List<GameObject>();
+        private float _startXPosition;
 
         public LevelBuilderPm(Ctx ctx)
         {
             _ctx = ctx;
-            AddUnsafe(_ctx.startLevel.SubscribeWithSkip(CreateLevel));
+            AddUnsafe(_ctx.startLevel.Subscribe(CreateFirstColumns));
             AddUnsafe(_ctx.finishLevel.Subscribe(DestroyLevel));
         }
 
-        private void CreateLevel(int levelNum)
+        private void NextColumn()
         {
-            var startXPosition = 0;
-            var columnsCount = _ctx.contentProvider.Settings.LevelConfig.GetColumnCountByLevel(levelNum);
-            _levelColumns = new GameObject[columnsCount];
-            for (var i = 0; i < columnsCount; i++)
+            
+        }
+
+        private void CreateFirstColumns()
+        {
+            for (var i = 0; i < 2; i++)
             {
                 var column = UnityEngine.Object.Instantiate(_ctx.contentProvider.Views.Levelcolumn,
-                    new Vector3(startXPosition, 0, 0),
+                    new Vector3(_startXPosition, 0, 0),
                     Quaternion.identity);
-                _levelColumns[i] = column;
-                startXPosition += 5 + UnityEngine.Random.Range(0, 5);
+                _levelColumns.Add(column);
+                _startXPosition += 5 + UnityEngine.Random.Range(0, 5);
             }
         }
 
         private void DestroyLevel()
         {
-            foreach (var column in _levelColumns)
-            {
+            foreach (var column in _levelColumns) 
                 UnityEngine.Object.Destroy(column);
-            }
-            _levelColumns = null;
+            _levelColumns.Clear();
+            _startXPosition = 0;
         }
     }
 }

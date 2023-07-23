@@ -1,5 +1,7 @@
 ﻿using System;
 using CodeBase.Game.Gameplay.Camera;
+using CodeBase.Game.Gameplay.ScoreCounter;
+using CodeBase.Game.MainMenu;
 using UnityEngine;
 
 namespace CodeBase.Data
@@ -20,7 +22,10 @@ namespace CodeBase.Data
         [Serializable]
         public class UIViewsContent
         {
-            
+            public MainMenuView MainMenuView => mainMenuView;
+            public ScoreCounterView ScoreCounterView => scoreCounterView;
+            [SerializeField] private MainMenuView mainMenuView;
+            [SerializeField] private ScoreCounterView scoreCounterView;
         }
 
         [Serializable]

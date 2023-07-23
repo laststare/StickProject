@@ -7,7 +7,7 @@ namespace CodeBase.Game.Gameplay.Camera
     {
         public struct Ctx
         {
-            public ReactiveEvent<int> startLevel;
+            public ReactiveTrigger startLevel;
             public ReactiveTrigger finishLevel;
         }
 
