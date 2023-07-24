@@ -11,7 +11,6 @@ namespace CodeBase.Game.Level
         {
             public ContentProvider contentProvider;
             public ReactiveTrigger startLevel;
-            public ReactiveTrigger finishLevel;
             public ReactiveProperty<float> actualColumnXPosition;
             public ReactiveProperty<float> nextColumnXPosition;
         }
@@ -26,7 +25,6 @@ namespace CodeBase.Game.Level
             {
                 contentProvider = _ctx.contentProvider,
                 startLevel = _ctx.startLevel,
-                finishLevel = _ctx.finishLevel,
                 actualColumnXPosition = _ctx.actualColumnXPosition,
                 nextColumnXPosition = _ctx.nextColumnXPosition
             };

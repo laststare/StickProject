@@ -15,8 +15,7 @@ namespace CodeBase.Game
         }
 
         private readonly Ctx _ctx;
-      
-
+        
         public GameplayPm(Ctx ctx)
         {
             _ctx = ctx;

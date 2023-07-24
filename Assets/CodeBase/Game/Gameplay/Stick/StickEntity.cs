@@ -1,5 +1,6 @@
 using CodeBase.Data;
 using External.Framework;
+using External.Reactive;
 using UniRx;
 
 namespace CodeBase.Game.Gameplay.Stick
@@ -12,6 +13,7 @@ namespace CodeBase.Game.Gameplay.Stick
             public IReadOnlyReactiveProperty<float> actualColumnXPosition;
             public ReactiveProperty<LevelFlowState> levelFlowState;
             public ReactiveProperty<float> stickLength;
+            public IReadOnlyReactiveTrigger startLevel;
         }
 
         private readonly Ctx _ctx;
@@ -30,7 +32,8 @@ namespace CodeBase.Game.Gameplay.Stick
                 contentProvider = _ctx.contentProvider,
                 actualColumnXPosition = _ctx.actualColumnXPosition,
                 levelFlowState = _ctx.levelFlowState,
-                stickLength = _ctx.stickLength
+                stickLength = _ctx.stickLength,
+                startLevel = _ctx.startLevel
             };
             _pm = new StickPm(stickPmCtx);
             AddUnsafe(_pm);

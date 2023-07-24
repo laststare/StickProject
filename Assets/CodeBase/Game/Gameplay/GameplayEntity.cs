@@ -88,7 +88,8 @@ namespace CodeBase.Game.Gameplay
                 actualColumnXPosition = _ctx.actualColumnXPosition,
                 nextColumnXPosition = _ctx.nextColumnXPosition,
                 levelFlowState = _ctx.levelFlowState,
-                stickLength = _stickLength
+                stickLength = _stickLength,
+                finishLevel = _ctx.finishLevel
             };
             _playerEntity = new PlayerEntity(playerEntityCtx);
             AddUnsafe(_playerEntity);
@@ -101,7 +102,8 @@ namespace CodeBase.Game.Gameplay
                 contentProvider = _ctx.contentProvider,
                 actualColumnXPosition = _ctx.actualColumnXPosition,
                 levelFlowState = _ctx.levelFlowState,
-                stickLength = _stickLength
+                stickLength = _stickLength,
+                startLevel = _ctx.startLevel
             };
             _stickEntity = new StickEntity(stickEntityCtx);
             AddUnsafe(_stickEntity);

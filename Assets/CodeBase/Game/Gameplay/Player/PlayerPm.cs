@@ -12,10 +12,13 @@ namespace CodeBase.Game.Gameplay.Player
             public IReadOnlyReactiveProperty<float> actualColumnXPosition;
             public IReadOnlyReactiveProperty<float> nextColumnXPosition;
             public ReactiveEvent<float> movePlayerTo;
-            public IReadOnlyReactiveProperty<LevelFlowState> levelFlowState;
+            public ReactiveProperty<LevelFlowState> levelFlowState;
             public IReadOnlyReactiveProperty<float> stickLength;
+            public IReadOnlyReactiveTrigger playerFinishMoving;
+            public ReactiveTrigger finishLevel;
         }
         private readonly Ctx _ctx;
+        private bool _isStickLengthCorrect;
 
         public PlayerPm (Ctx ctx)
         {
@@ -25,19 +28,29 @@ namespace CodeBase.Game.Gameplay.Player
                 if (x == LevelFlowState.PlayerRun)
                     SetPlayerDestinationPoint();
             }));
+            AddUnsafe(_ctx.playerFinishMoving.Subscribe(PlayerOnNextColumn));
         }
 
         private void SetPlayerDestinationPoint()
         {
-            var distance = _ctx.actualColumnXPosition.Value + 1 + _ctx.stickLength.Value;
-            Debug.Log($"length {_ctx.stickLength.Value} distance {distance}");
-            var correct = distance >= _ctx.nextColumnXPosition.Value - 1 &&
-                          distance <= _ctx.nextColumnXPosition.Value + 1;
-            if (correct)
-                _ctx.movePlayerTo.Notify(_ctx.nextColumnXPosition.Value + Constant.PlayerOnColumnXOffset);
-            else
-                _ctx.movePlayerTo.Notify(distance);
-            
+            var moveDistance = _ctx.actualColumnXPosition.Value + 1 + _ctx.stickLength.Value;
+            Debug.Log($"length {_ctx.stickLength.Value} distance {moveDistance}");
+            _isStickLengthCorrect = moveDistance >= _ctx.nextColumnXPosition.Value - 1 &&
+                                    moveDistance <= _ctx.nextColumnXPosition.Value + 1;
+            var playerDestination = _isStickLengthCorrect
+                ? _ctx.nextColumnXPosition.Value + Constant.PlayerOnColumnXOffset
+                : moveDistance;
+            _ctx.movePlayerTo.Notify(playerDestination);
+        }
+
+        private void PlayerOnNextColumn()
+        {
+            if (_isStickLengthCorrect)
+            {
+                _ctx.levelFlowState.Value = LevelFlowState.CameraRun;
+            }
+            else 
+                _ctx.finishLevel.Notify();
         }
 
     }

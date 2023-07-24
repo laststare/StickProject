@@ -13,6 +13,7 @@ namespace CodeBase.Game.MainMenu
              public RectTransform uiRoot;
              public ReactiveTrigger startLevel;
              public IReadOnlyReactiveTrigger startGame;
+             public IReadOnlyReactiveTrigger finishLevel;
         } 
         
         private readonly Ctx _ctx;
@@ -44,7 +45,9 @@ namespace CodeBase.Game.MainMenu
             _view.Init(new MainMenuView.Ctx()
             {
                 menuButtonClicked = _menuButtonClicked,
-                startGame = _ctx.startGame
+                startGame = _ctx.startGame,
+                finishLevel = _ctx.finishLevel,
+                startLevel = _ctx.startLevel
             });
         }
 

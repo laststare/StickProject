@@ -41,7 +41,6 @@ namespace CodeBase.Game
             {
                 contentProvider = _ctx.contentProvider,
                 startLevel = _startLevel,
-                finishLevel = _finishLevel,
                 actualColumnXPosition = _actualColumnXPosition,
                 nextColumnXPosition = _nextColumnXPosition
             };
@@ -73,7 +72,8 @@ namespace CodeBase.Game
                 contentProvider = _ctx.contentProvider,
                 uiRoot = _ctx.uiRoot,
                 startLevel = _startLevel,
-                startGame = _startGame
+                startGame = _startGame,
+                finishLevel = _finishLevel
             };
             _mainMenuEntity = new MainMenuEntity(mainMenuEntityCtx);
             AddUnsafe(_mainMenuEntity);

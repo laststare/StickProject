@@ -29,6 +29,7 @@ namespace CodeBase.Game.MainMenu
                         _ctx.startLevel.Notify();
                     break;
                 case MainMenuButton.RestartGame:
+                        _ctx.startLevel.Notify();
                     break;
                 case MainMenuButton.BackToStartScreen:
                     break;

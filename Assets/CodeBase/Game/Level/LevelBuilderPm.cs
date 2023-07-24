@@ -14,7 +14,6 @@ namespace CodeBase.Game.Level
         {
             public ContentProvider contentProvider;
             public IReadOnlyReactiveTrigger startLevel;
-            public IReadOnlyReactiveTrigger finishLevel;
             public ReactiveProperty<float> actualColumnXPosition;
             public ReactiveProperty<float> nextColumnXPosition;
         }
@@ -26,23 +25,21 @@ namespace CodeBase.Game.Level
         {
             _ctx = ctx;
             AddUnsafe(_ctx.startLevel.Subscribe(CreateFirstColumns));
-            AddUnsafe(_ctx.finishLevel.Subscribe(DestroyLevel));
-        }
-
-        private void NextColumn()
-        {
-            //var tmpActual = _ctx.actualColumnXPosition.Value;
-            _ctx.actualColumnXPosition.Value += _ctx.nextColumnXPosition.Value;
-            _ctx.nextColumnXPosition.Value = _ctx.actualColumnXPosition.Value + 4 + UnityEngine.Random.Range(0, 4);
-            AddColumn(_ctx.nextColumnXPosition.Value);
         }
 
         private void CreateFirstColumns()
         {
+            DestroyLevel();
             AddColumn(0);
             NextColumn();
         }
-
+        private void NextColumn()
+        {
+            _ctx.actualColumnXPosition.Value += _ctx.nextColumnXPosition.Value;
+            _ctx.nextColumnXPosition.Value = _ctx.actualColumnXPosition.Value + 4 + UnityEngine.Random.Range(0, 4);
+            AddColumn(_ctx.nextColumnXPosition.Value);
+        }
+        
         private void AddColumn(float xPosition)
         {
             var column = UnityEngine.Object.Instantiate(_ctx.contentProvider.Views.Levelcolumn,
@@ -57,6 +54,7 @@ namespace CodeBase.Game.Level
                 UnityEngine.Object.Destroy(column);
             _levelColumns.Clear();
             _ctx.actualColumnXPosition.Value = 0;
+            _ctx.nextColumnXPosition.Value = 0;
         }
     }
 }
