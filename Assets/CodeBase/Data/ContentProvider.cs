@@ -1,6 +1,8 @@
 ﻿using System;
 using CodeBase.Game.Gameplay.Camera;
+using CodeBase.Game.Gameplay.Player;
 using CodeBase.Game.Gameplay.ScoreCounter;
+using CodeBase.Game.Gameplay.Stick;
 using CodeBase.Game.MainMenu;
 using UnityEngine;
 
@@ -33,8 +35,12 @@ namespace CodeBase.Data
         { 
             public GameObject Levelcolumn => levelcolumn;
             public CameraView CameraView => cameraView;
+            public PlayerView PlayerView => playerView;
+            public StickView StickView => stickView;
             [SerializeField] private GameObject levelcolumn;
             [SerializeField] private CameraView cameraView;
+            [SerializeField] private PlayerView playerView;
+            [SerializeField] private StickView stickView;
         }
 
         [Serializable]

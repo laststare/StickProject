@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: ContentProvider
   m_EditorClassIdentifier: 
   views:
-    levelcolumn: {fileID: 5740262576617682235, guid: 6c05b0e7be03f4cf1be9dc4b926e416e, type: 3}
+    levelcolumn: {fileID: 1658101390224254136, guid: 07fac9853a472434f99f61ad8d4a5e45, type: 3}
     cameraView: {fileID: 6958449939205910844, guid: a52c0c12e968a41ba934997429e80eda, type: 3}
+    playerView: {fileID: -2425771021034557161, guid: 430dcfb3ea080452f89bef4f6b98987e, type: 3}
+    stickView: {fileID: 5871690449498351297, guid: f8dee52a1e08f40499b22756d8d59aef, type: 3}
   uiViews:
     mainMenuView: {fileID: 2233702632769722541, guid: 706f9760273b642c099f22228c4049ce, type: 3}
     scoreCounterView: {fileID: 7807588281789143394, guid: 91a8b2cde3f9b4421a6f95a10334ab60, type: 3}

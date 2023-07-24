@@ -23,7 +23,7 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
 
         private void GetSavedScore()
         {
-            var savedBestScore = PlayerPrefs.GetString(Constant.savedScore);
+            var savedBestScore = PlayerPrefs.GetString(Constant.SavedScore);
             if (!string.IsNullOrEmpty(savedBestScore))
                 _bestScore = savedBestScore;
             SendScoreToView(string.Empty);
@@ -39,7 +39,7 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
         private void UpdateBestScore(int updatesBestScore)
         {
             var updatesBestScoreText = updatesBestScore.ToString();
-            PlayerPrefs.SetString(Constant.savedScore, updatesBestScoreText);
+            PlayerPrefs.SetString(Constant.SavedScore, updatesBestScoreText);
             _bestScore = updatesBestScoreText;
         }
     }

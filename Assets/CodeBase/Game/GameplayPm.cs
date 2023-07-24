@@ -1,8 +1,7 @@
-using CodeBase.Game.Gameplay.Camera;
-using CodeBase.Game.Gameplay.ScoreCounter;
 using Cysharp.Threading.Tasks;
 using External.Framework;
 using External.Reactive;
+using UniRx;
 
 namespace CodeBase.Game
 {
@@ -11,6 +10,7 @@ namespace CodeBase.Game
         public struct Ctx
         {
             public ReactiveTrigger startGame;
+            public ReactiveProperty<LevelFlowState> levelFlowState;
         }
 
         private readonly Ctx _ctx;
@@ -26,6 +26,7 @@ namespace CodeBase.Game
         {
             await UniTask.DelayFrame(1); 
             _ctx.startGame.Notify();
+            _ctx.levelFlowState.Value = LevelFlowState.PlayerIdle;
         }
     }
 }

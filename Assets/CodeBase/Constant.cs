@@ -1,7 +1,10 @@
+using UnityEngine;
+
 namespace CodeBase
 {
-    public class Constant
+    public static class Constant
     {
-        public static readonly string savedScore = "saved_score";
+        public const string SavedScore = "saved_score";
+        public static readonly float PlayerYPosition = 9.5f;
     }
 }

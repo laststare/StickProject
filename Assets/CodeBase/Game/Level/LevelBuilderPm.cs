@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using CodeBase.Data;
 using External.Framework;
 using External.Reactive;
+using UniRx;
 using UnityEngine;
 
 namespace CodeBase.Game.Level
@@ -14,6 +15,7 @@ namespace CodeBase.Game.Level
             public ContentProvider contentProvider;
             public IReadOnlyReactiveTrigger startLevel;
             public IReadOnlyReactiveTrigger finishLevel;
+            public ReactiveProperty<float> actualColumnXPosition;
         }
 
         private readonly Ctx _ctx;
@@ -40,7 +42,7 @@ namespace CodeBase.Game.Level
                     new Vector3(_startXPosition, 0, 0),
                     Quaternion.identity);
                 _levelColumns.Add(column);
-                _startXPosition += 5 + UnityEngine.Random.Range(0, 5);
+                _startXPosition += 5 + UnityEngine.Random.Range(0, 4);
             }
         }
 

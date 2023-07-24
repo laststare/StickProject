@@ -1,8 +1,11 @@
 using CodeBase.Data;
 using CodeBase.Game.Gameplay.Camera;
+using CodeBase.Game.Gameplay.Player;
 using CodeBase.Game.Gameplay.ScoreCounter;
+using CodeBase.Game.Gameplay.Stick;
 using External.Framework;
 using External.Reactive;
+using UniRx;
 using UnityEngine;
 
 namespace CodeBase.Game.Gameplay
@@ -16,12 +19,16 @@ namespace CodeBase.Game.Gameplay
             public IReadOnlyReactiveTrigger startLevel;
             public ReactiveTrigger finishLevel;
             public ReactiveTrigger startGame;
+            public ReactiveProperty<LevelFlowState> levelFlowState;
+            public ReactiveProperty<float> actualColumnXPosition;
         }
 
         private readonly Ctx _ctx;
         private GameplayPm _pm;
         private CameraEntity _cameraEntity;
         private ScoreCounterEntity _scoreCounterEntity;
+        private PlayerEntity _playerEntity;
+        private StickEntity _stickEntity;
 
         public GameplayEntity(Ctx ctx)
         {
@@ -29,13 +36,16 @@ namespace CodeBase.Game.Gameplay
             CreatePm();
             CreateCameraEntity();
             CreateScoreCounter();
+            CreatePlayerEntity();
+            CreateStickEntity();
         }
 
         private void CreatePm()
         {
             var gameplayPmCtx = new GameplayPm.Ctx()
             {
-                startGame = _ctx.startGame
+                startGame = _ctx.startGame,
+                levelFlowState = _ctx.levelFlowState
             };
             _pm = new GameplayPm(gameplayPmCtx);
             AddUnsafe(_pm);
@@ -64,6 +74,30 @@ namespace CodeBase.Game.Gameplay
             };
             _scoreCounterEntity = new ScoreCounterEntity(scoreCounterEntityCtx);
             AddUnsafe(_scoreCounterEntity);
+        }
+
+        private void CreatePlayerEntity()
+        {
+            var playerEntityCtx = new PlayerEntity.Ctx()
+            {
+                contentProvider = _ctx.contentProvider,
+                startLevel = _ctx.startLevel,
+                actualColumnXPosition = _ctx.actualColumnXPosition
+            };
+            _playerEntity = new PlayerEntity(playerEntityCtx);
+            AddUnsafe(_playerEntity);
+        }
+
+        private void CreateStickEntity()
+        {
+            var stickEntityCtx = new StickEntity.Ctx()
+            {
+                contentProvider = _ctx.contentProvider,
+                actualColumnXPosition = _ctx.actualColumnXPosition,
+                levelFlowState = _ctx.levelFlowState
+            };
+            _stickEntity = new StickEntity(stickEntityCtx);
+            AddUnsafe(_stickEntity);
         }
     }
 }
