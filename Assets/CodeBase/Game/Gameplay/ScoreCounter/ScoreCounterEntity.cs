@@ -14,6 +14,8 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
             public IReadOnlyReactiveTrigger startGame;
             public IReadOnlyReactiveTrigger startLevel;
             public ReactiveEvent<int> addScore;
+            public IReadOnlyReactiveTrigger finishLevel;
+            public IReadOnlyReactiveTrigger showStartMenu;
         }
         private readonly Ctx _ctx;
         private ScoreCounterPm _pm;
@@ -33,7 +35,8 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
             {
                 showScore = _showScore,
                 startGame = _ctx.startGame,
-                addScore = _ctx.addScore
+                addScore = _ctx.addScore,
+                finishLevel = _ctx.finishLevel
             };
             _pm = new ScoreCounterPm(scoreCounterPmCtx);
             AddUnsafe(_pm);
@@ -45,7 +48,10 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
             _view.Init(new ScoreCounterView.Ctx()
             {
                 showScore = _showScore,
-                startLevel = _ctx.startLevel
+                startLevel = _ctx.startLevel,
+                finishLevel = _ctx.finishLevel,
+                startGame = _ctx.startGame,
+                showStartMenu = _ctx.showStartMenu
             });
         }
 

@@ -22,6 +22,7 @@ namespace CodeBase.Game.Gameplay
             public ReactiveProperty<LevelFlowState> levelFlowState;
             public ReactiveProperty<float> actualColumnXPosition;
             public ReactiveProperty<float> nextColumnXPosition;
+            public IReadOnlyReactiveTrigger showStartMenu;
         }
 
         private readonly Ctx _ctx;
@@ -75,7 +76,9 @@ namespace CodeBase.Game.Gameplay
                 uiRoot = _ctx.uiRoot,
                 startGame = _ctx.startGame,
                 startLevel = _ctx.startLevel,
-                addScore = _addScore
+                addScore = _addScore,
+                finishLevel = _ctx.finishLevel,
+                showStartMenu = _ctx.showStartMenu
             };
             _scoreCounterEntity = new ScoreCounterEntity(scoreCounterEntityCtx);
             AddUnsafe(_scoreCounterEntity);

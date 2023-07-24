@@ -11,6 +11,7 @@ namespace CodeBase.Game.MainMenu
         {
             public ReactiveEvent<MainMenuButton> menuButtonClicked;
             public ReactiveTrigger startLevel;
+            public ReactiveTrigger showStartMenu;
         } 
         
         private readonly Ctx _ctx;
@@ -32,9 +33,8 @@ namespace CodeBase.Game.MainMenu
                         _ctx.startLevel.Notify();
                     break;
                 case MainMenuButton.BackToStartScreen:
+                        _ctx.showStartMenu.Notify();
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(button), button, null);
             }
         }
     }

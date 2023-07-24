@@ -14,6 +14,7 @@ namespace CodeBase.Game.MainMenu
              public ReactiveTrigger startLevel;
              public IReadOnlyReactiveTrigger startGame;
              public IReadOnlyReactiveTrigger finishLevel;
+             public ReactiveTrigger showStartMenu;
         } 
         
         private readonly Ctx _ctx;
@@ -33,7 +34,8 @@ namespace CodeBase.Game.MainMenu
             var mainMenuPmCtx = new MainMenuPm.Ctx()
             {
                 menuButtonClicked = _menuButtonClicked,
-                startLevel = _ctx.startLevel
+                startLevel = _ctx.startLevel,
+                showStartMenu = _ctx.showStartMenu
             };
             _pm = new MainMenuPm(mainMenuPmCtx);
             AddUnsafe(_pm);

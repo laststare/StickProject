@@ -13,6 +13,7 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
             public ReactiveEvent<string, string> showScore;
             public IReadOnlyReactiveTrigger startGame;
             public ReactiveEvent<int> addScore;
+            public IReadOnlyReactiveTrigger finishLevel;
         }
         private readonly Ctx _ctx;
         private int _currentScore, _bestScore;
@@ -22,18 +23,19 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
             _ctx = ctx;
             AddUnsafe(_ctx.startGame.Subscribe(GetSavedScore));
             AddUnsafe(_ctx.addScore.SubscribeWithSkip(UpdateScore));
+            AddUnsafe(_ctx.finishLevel.Subscribe(SendScoreToView));
         }
 
         private void GetSavedScore()
         {
             _bestScore = PlayerPrefs.GetInt(Constant.SavedScore);
-            SendScoreToView(string.Empty);
+            SendScoreToView();
         }
 
-        private void SendScoreToView(string actual)
+        private void SendScoreToView()
         {
             var bestText = $"Best score: {_bestScore}";
-            var actualText = !string.IsNullOrEmpty(actual)? $"Your score: {actual}" : string.Empty;
+            var actualText =  $"Your score: {_currentScore}";
             _ctx.showScore.Notify(bestText, actualText);
         }
 

@@ -27,6 +27,9 @@ namespace CodeBase.Game
         private readonly ReactiveProperty<LevelFlowState> _levelFlowState = new();
         private readonly ReactiveProperty<float> _actualColumnXPosition = new();
         private readonly ReactiveProperty<float> _nextColumnXPosition = new();
+        private readonly ReactiveTrigger _showStartMenu = new();
+
+        
         public GameEntity(Ctx ctx)
         {
             _ctx = ctx;
@@ -59,7 +62,8 @@ namespace CodeBase.Game
                 startGame = _startGame,
                 levelFlowState = _levelFlowState,
                 actualColumnXPosition = _actualColumnXPosition,
-                nextColumnXPosition = _nextColumnXPosition
+                nextColumnXPosition = _nextColumnXPosition,
+                showStartMenu = _showStartMenu
             };
             _gameplayEntity = new GameplayEntity(gameplayEntityCtx);
             AddUnsafe(_gameplayEntity);
@@ -73,7 +77,8 @@ namespace CodeBase.Game
                 uiRoot = _ctx.uiRoot,
                 startLevel = _startLevel,
                 startGame = _startGame,
-                finishLevel = _finishLevel
+                finishLevel = _finishLevel,
+                showStartMenu = _showStartMenu
             };
             _mainMenuEntity = new MainMenuEntity(mainMenuEntityCtx);
             AddUnsafe(_mainMenuEntity);
