@@ -31,26 +31,12 @@ namespace CodeBase.Game.Gameplay.Stick
         public StickPm(Ctx ctx)
         {
             _ctx = ctx;
-            AddUnsafe(_ctx.levelFlowState.Subscribe(LevelFlowReceiver));
-            AddUnsafe(_ctx.startLevel.Subscribe(DestroySticks));
-        }
-
-        private void LevelFlowReceiver(LevelFlowState state)
-        {
-            switch (state)
+            AddUnsafe(_ctx.levelFlowState.Subscribe(x =>
             {
-                case LevelFlowState.PlayerIdle:
+                if(x == LevelFlowState.PlayerIdle)
                     MakeTemporarySubscription();
-                    break;
-                case LevelFlowState.StickGrowsUp:
-                    break;
-                case LevelFlowState.StickFalls:
-                    break;
-                case LevelFlowState.PlayerRun:
-                    break;
-                case LevelFlowState.CameraRun:
-                    break;
-            }
+            }));
+            AddUnsafe(_ctx.startLevel.Subscribe(DestroySticks));
         }
 
         private Transform SpawnStick()

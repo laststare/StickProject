@@ -4,6 +4,7 @@ using CodeBase.Data;
 using External.Framework;
 using External.Reactive;
 using UniRx;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace CodeBase.Game.Level
@@ -16,6 +17,7 @@ namespace CodeBase.Game.Level
             public IReadOnlyReactiveTrigger startLevel;
             public ReactiveProperty<float> actualColumnXPosition;
             public ReactiveProperty<float> nextColumnXPosition;
+            public ReactiveProperty<LevelFlowState> levelFlowState;
         }
 
         private readonly Ctx _ctx;
@@ -25,6 +27,10 @@ namespace CodeBase.Game.Level
         {
             _ctx = ctx;
             AddUnsafe(_ctx.startLevel.Subscribe(CreateFirstColumns));
+            AddUnsafe(_ctx.levelFlowState.Subscribe(x =>
+            {
+                if (x == LevelFlowState.CameraRun) NextColumn();
+            }));
         }
 
         private void CreateFirstColumns()
@@ -35,8 +41,8 @@ namespace CodeBase.Game.Level
         }
         private void NextColumn()
         {
-            _ctx.actualColumnXPosition.Value += _ctx.nextColumnXPosition.Value;
-            _ctx.nextColumnXPosition.Value = _ctx.actualColumnXPosition.Value + 4 + UnityEngine.Random.Range(0, 4);
+            _ctx.actualColumnXPosition.Value = _ctx.nextColumnXPosition.Value;
+            _ctx.nextColumnXPosition.Value = _ctx.actualColumnXPosition.Value + 6 + UnityEngine.Random.Range(0, 4);
             AddColumn(_ctx.nextColumnXPosition.Value);
         }
         

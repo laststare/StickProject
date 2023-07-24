@@ -24,6 +24,7 @@ namespace CodeBase.Game.Gameplay.Player
         private PlayerView _view;
         private readonly ReactiveEvent<float> _movePlayerTo = new();
         private readonly ReactiveTrigger _playerFinishMoving = new ();
+        
 
         public PlayerEntity (Ctx ctx)
         {

@@ -33,7 +33,7 @@ namespace CodeBase.Game.Gameplay.Stick
                 actualColumnXPosition = _ctx.actualColumnXPosition,
                 levelFlowState = _ctx.levelFlowState,
                 stickLength = _ctx.stickLength,
-                startLevel = _ctx.startLevel
+                startLevel = _ctx.startLevel,
             };
             _pm = new StickPm(stickPmCtx);
             AddUnsafe(_pm);

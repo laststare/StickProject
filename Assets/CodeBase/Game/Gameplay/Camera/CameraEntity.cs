@@ -1,6 +1,7 @@
 using CodeBase.Data;
 using External.Framework;
 using External.Reactive;
+using UniRx;
 using UnityEngine;
 
 namespace CodeBase.Game.Gameplay.Camera
@@ -10,13 +11,16 @@ namespace CodeBase.Game.Gameplay.Camera
         public struct Ctx
         {
             public ContentProvider contentProvider;
+            public ReactiveProperty<LevelFlowState> levelFlowState;
             public IReadOnlyReactiveTrigger startLevel;
-            public IReadOnlyReactiveTrigger finishLevel;
+            public IReadOnlyReactiveProperty<float> actualColumnXPosition;
         }
 
         private readonly Ctx _ctx;
         private CameraPm _pm;
         private CameraView _view;
+        private readonly ReactiveEvent<float> _moveCameraTo = new();
+        private readonly ReactiveTrigger _cameraFinishMoving = new();
 
         public CameraEntity(Ctx ctx)
         {
@@ -29,7 +33,11 @@ namespace CodeBase.Game.Gameplay.Camera
         {
             var cameraPmCtx = new CameraPm.Ctx()
             {
-
+                moveCameraTo = _moveCameraTo,
+                actualColumnXPosition = _ctx.actualColumnXPosition,
+                levelFlowState = _ctx.levelFlowState,
+                startLevel = _ctx.startLevel,
+                cameraFinishMoving = _cameraFinishMoving
             };
             _pm = new CameraPm(cameraPmCtx);
             AddUnsafe(_pm);
@@ -40,7 +48,8 @@ namespace CodeBase.Game.Gameplay.Camera
             _view = Object.Instantiate(_ctx.contentProvider.Views.CameraView);
             _view.Init(new CameraView.Ctx()
             {
-                
+                moveCameraTo = _moveCameraTo,
+                cameraFinishMoving = _cameraFinishMoving
             });
         }
         

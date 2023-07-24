@@ -45,7 +45,8 @@ namespace CodeBase.Game
                 contentProvider = _ctx.contentProvider,
                 startLevel = _startLevel,
                 actualColumnXPosition = _actualColumnXPosition,
-                nextColumnXPosition = _nextColumnXPosition
+                nextColumnXPosition = _nextColumnXPosition,
+                levelFlowState = _levelFlowState
             };
             _levelBuilderEntity = new LevelBuilderEntity(levelBuilderEntityCtx);
             AddUnsafe(_levelBuilderEntity);
@@ -63,7 +64,7 @@ namespace CodeBase.Game
                 levelFlowState = _levelFlowState,
                 actualColumnXPosition = _actualColumnXPosition,
                 nextColumnXPosition = _nextColumnXPosition,
-                showStartMenu = _showStartMenu
+                showStartMenu = _showStartMenu,
             };
             _gameplayEntity = new GameplayEntity(gameplayEntityCtx);
             AddUnsafe(_gameplayEntity);

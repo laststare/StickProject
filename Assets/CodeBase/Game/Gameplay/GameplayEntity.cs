@@ -34,6 +34,7 @@ namespace CodeBase.Game.Gameplay
         private readonly ReactiveProperty<float> _stickLength = new();
         private readonly ReactiveEvent<int> _addScore = new();
 
+
         public GameplayEntity(Ctx ctx)
         {
             _ctx = ctx;
@@ -50,7 +51,7 @@ namespace CodeBase.Game.Gameplay
             {
                 startGame = _ctx.startGame,
                 levelFlowState = _ctx.levelFlowState,
-                startLevel = _ctx.startLevel
+                startLevel = _ctx.startLevel,
             };
             _pm = new GameplayPm(gameplayPmCtx);
             AddUnsafe(_pm);
@@ -62,7 +63,8 @@ namespace CodeBase.Game.Gameplay
             {
                 contentProvider = _ctx.contentProvider,
                 startLevel = _ctx.startLevel,
-                finishLevel = _ctx.finishLevel
+                levelFlowState = _ctx.levelFlowState,
+                actualColumnXPosition = _ctx.actualColumnXPosition
             };
             _cameraEntity = new CameraEntity(cameraEntityCtx);
             AddUnsafe(_cameraEntity);
@@ -95,7 +97,7 @@ namespace CodeBase.Game.Gameplay
                 levelFlowState = _ctx.levelFlowState,
                 stickLength = _stickLength,
                 finishLevel = _ctx.finishLevel,
-                addScore = _addScore
+                addScore = _addScore,
             };
             _playerEntity = new PlayerEntity(playerEntityCtx);
             AddUnsafe(_playerEntity);
@@ -109,7 +111,7 @@ namespace CodeBase.Game.Gameplay
                 actualColumnXPosition = _ctx.actualColumnXPosition,
                 levelFlowState = _ctx.levelFlowState,
                 stickLength = _stickLength,
-                startLevel = _ctx.startLevel
+                startLevel = _ctx.startLevel,
             };
             _stickEntity = new StickEntity(stickEntityCtx);
             AddUnsafe(_stickEntity);
