@@ -17,6 +17,7 @@ namespace CodeBase.Game.Gameplay.Player
             public ReactiveProperty<LevelFlowState> levelFlowState;
             public ReactiveProperty<float> stickLength;
             public ReactiveTrigger finishLevel;
+            public ReactiveEvent<int> addScore;
         }
         private readonly Ctx _ctx;
         private PlayerPm _pm;
@@ -41,7 +42,8 @@ namespace CodeBase.Game.Gameplay.Player
                 stickLength = _ctx.stickLength,
                 actualColumnXPosition = _ctx.actualColumnXPosition,
                 playerFinishMoving = _playerFinishMoving,
-                finishLevel = _ctx.finishLevel
+                finishLevel = _ctx.finishLevel,
+                addScore = _ctx.addScore
             };
             _pm = new PlayerPm(playerPmCtx);
             AddUnsafe(_pm);

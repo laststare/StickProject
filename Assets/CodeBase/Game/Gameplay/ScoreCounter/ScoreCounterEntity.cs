@@ -13,6 +13,7 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
             public RectTransform uiRoot;
             public IReadOnlyReactiveTrigger startGame;
             public IReadOnlyReactiveTrigger startLevel;
+            public ReactiveEvent<int> addScore;
         }
         private readonly Ctx _ctx;
         private ScoreCounterPm _pm;
@@ -31,7 +32,8 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
             var scoreCounterPmCtx = new ScoreCounterPm.Ctx()
             {
                 showScore = _showScore,
-                startGame = _ctx.startGame
+                startGame = _ctx.startGame,
+                addScore = _ctx.addScore
             };
             _pm = new ScoreCounterPm(scoreCounterPmCtx);
             AddUnsafe(_pm);

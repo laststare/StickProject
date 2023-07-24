@@ -16,6 +16,7 @@ namespace CodeBase.Game.Gameplay.Player
             public IReadOnlyReactiveProperty<float> stickLength;
             public IReadOnlyReactiveTrigger playerFinishMoving;
             public ReactiveTrigger finishLevel;
+            public ReactiveEvent<int> addScore;
         }
         private readonly Ctx _ctx;
         private bool _isStickLengthCorrect;
@@ -47,6 +48,7 @@ namespace CodeBase.Game.Gameplay.Player
         {
             if (_isStickLengthCorrect)
             {
+                _ctx.addScore.Notify(10);
                 _ctx.levelFlowState.Value = LevelFlowState.CameraRun;
             }
             else 
