@@ -16,6 +16,7 @@ namespace CodeBase.Game.Gameplay.Stick
             public ContentProvider contentProvider; 
             public IReadOnlyReactiveProperty<float> actualColumnXPosition;
             public ReactiveProperty<LevelFlowState> levelFlowState;
+            public ReactiveProperty<float> stickLength;
         }
 
         private readonly Ctx _ctx;
@@ -51,7 +52,7 @@ namespace CodeBase.Game.Gameplay.Stick
         private void SpawnStick()
         {
             _actualStick = Object.Instantiate(_ctx.contentProvider.Views.StickView,
-                new Vector2(_ctx.actualColumnXPosition.Value + 1, Constant.PlayerYPosition - 0.5f), Quaternion.identity);
+                new Vector2(_ctx.actualColumnXPosition.Value + 1, Constant.PlayerYPosition - 0.25f),Quaternion.identity);
         }
 
         private void MakeTemporarySubscription()
@@ -72,13 +73,15 @@ namespace CodeBase.Game.Gameplay.Stick
         private async void GrowStickUp()
         {
             _ctx.levelFlowState.Value = LevelFlowState.StickGrowsUp;
-            float stickHeight = 0;
+            var stickHeight = 0f;
+            var stickWidth = _actualStick.transform.localScale.x;
             while (_ctx.levelFlowState.Value == LevelFlowState.StickGrowsUp)
             {
                 stickHeight += Time.deltaTime * 6;
-                _actualStick.transform.localScale = new Vector3(0.5f, stickHeight, 1);
+                _actualStick.transform.localScale = new Vector3(stickWidth, stickHeight, 1);
                 await UniTask.Yield();
             }
+            _ctx.stickLength.Value = stickHeight;
         }
 
         private void RotateStick()

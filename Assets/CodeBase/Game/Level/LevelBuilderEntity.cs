@@ -13,6 +13,7 @@ namespace CodeBase.Game.Level
             public ReactiveTrigger startLevel;
             public ReactiveTrigger finishLevel;
             public ReactiveProperty<float> actualColumnXPosition;
+            public ReactiveProperty<float> nextColumnXPosition;
         }
 
         private readonly Ctx _ctx;
@@ -26,7 +27,8 @@ namespace CodeBase.Game.Level
                 contentProvider = _ctx.contentProvider,
                 startLevel = _ctx.startLevel,
                 finishLevel = _ctx.finishLevel,
-                actualColumnXPosition = _ctx.actualColumnXPosition
+                actualColumnXPosition = _ctx.actualColumnXPosition,
+                nextColumnXPosition = _ctx.nextColumnXPosition
             };
             _pm = new LevelBuilderPm(levelBuilderPmCtx);
             AddUnsafe(_pm);

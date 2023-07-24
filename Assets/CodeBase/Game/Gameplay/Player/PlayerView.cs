@@ -1,3 +1,4 @@
+using DG.Tweening;
 using External.Reactive;
 using UniRx;
 using UnityEngine;
@@ -10,19 +11,21 @@ namespace CodeBase.Game.Gameplay.Player
         {
             public IReadOnlyReactiveTrigger startLevel;
             public IReadOnlyReactiveProperty<float> actualColumnXPosition;
+            public IReadOnlyReactiveEvent<float> movePlayerTo;
 
         }
         private Ctx _ctx;
-        private float _columnPositionOffset = 0.5f;
 
         public void Init (Ctx ctx)
         {
             _ctx = ctx;
             _ctx.startLevel.Subscribe(() =>
             {
-                transform.position = new Vector2(_ctx.actualColumnXPosition.Value + _columnPositionOffset, Constant.PlayerYPosition);
+                transform.position = new Vector2(_ctx.actualColumnXPosition.Value + Constant.PlayerOnColumnXOffset, Constant.PlayerYPosition);
                 gameObject.SetActive(true);
             }).AddTo(this);
+
+            _ctx.movePlayerTo.Subscribe(x => transform.DOMoveX(x, 2));
         }
     }
 }

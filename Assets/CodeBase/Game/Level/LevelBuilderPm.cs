@@ -16,11 +16,11 @@ namespace CodeBase.Game.Level
             public IReadOnlyReactiveTrigger startLevel;
             public IReadOnlyReactiveTrigger finishLevel;
             public ReactiveProperty<float> actualColumnXPosition;
+            public ReactiveProperty<float> nextColumnXPosition;
         }
 
         private readonly Ctx _ctx;
         private readonly List<GameObject> _levelColumns = new List<GameObject>();
-        private float _startXPosition;
 
         public LevelBuilderPm(Ctx ctx)
         {
@@ -31,19 +31,24 @@ namespace CodeBase.Game.Level
 
         private void NextColumn()
         {
-            
+            //var tmpActual = _ctx.actualColumnXPosition.Value;
+            _ctx.actualColumnXPosition.Value += _ctx.nextColumnXPosition.Value;
+            _ctx.nextColumnXPosition.Value = _ctx.actualColumnXPosition.Value + 4 + UnityEngine.Random.Range(0, 4);
+            AddColumn(_ctx.nextColumnXPosition.Value);
         }
 
         private void CreateFirstColumns()
         {
-            for (var i = 0; i < 2; i++)
-            {
-                var column = UnityEngine.Object.Instantiate(_ctx.contentProvider.Views.Levelcolumn,
-                    new Vector3(_startXPosition, 0, 0),
-                    Quaternion.identity);
-                _levelColumns.Add(column);
-                _startXPosition += 5 + UnityEngine.Random.Range(0, 4);
-            }
+            AddColumn(0);
+            NextColumn();
+        }
+
+        private void AddColumn(float xPosition)
+        {
+            var column = UnityEngine.Object.Instantiate(_ctx.contentProvider.Views.Levelcolumn,
+                new Vector3(xPosition, 0, 0),
+                Quaternion.identity);
+            _levelColumns.Add(column); 
         }
 
         private void DestroyLevel()
@@ -51,7 +56,7 @@ namespace CodeBase.Game.Level
             foreach (var column in _levelColumns) 
                 UnityEngine.Object.Destroy(column);
             _levelColumns.Clear();
-            _startXPosition = 0;
+            _ctx.actualColumnXPosition.Value = 0;
         }
     }
 }

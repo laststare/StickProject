@@ -13,10 +13,14 @@ namespace CodeBase.Game.Gameplay.Player
             public ContentProvider contentProvider; 
             public IReadOnlyReactiveTrigger startLevel;
             public ReactiveProperty<float> actualColumnXPosition;
+            public ReactiveProperty<float> nextColumnXPosition;
+            public ReactiveProperty<LevelFlowState> levelFlowState;
+            public ReactiveProperty<float> stickLength;
         }
         private readonly Ctx _ctx;
         private PlayerPm _pm;
         private PlayerView _view;
+        private readonly ReactiveEvent<float> _movePlayerTo = new();
 
         public PlayerEntity (Ctx ctx)
         {
@@ -29,7 +33,11 @@ namespace CodeBase.Game.Gameplay.Player
         {
             var playerPmCtx = new PlayerPm.Ctx()
             {
-
+                nextColumnXPosition = _ctx.nextColumnXPosition,
+                movePlayerTo = _movePlayerTo,
+                levelFlowState = _ctx.levelFlowState,
+                stickLength = _ctx.stickLength,
+                actualColumnXPosition = _ctx.actualColumnXPosition
             };
             _pm = new PlayerPm(playerPmCtx);
             AddUnsafe(_pm);
@@ -41,7 +49,8 @@ namespace CodeBase.Game.Gameplay.Player
             _view.Init(new PlayerView.Ctx()
             {
                 startLevel = _ctx.startLevel,
-                actualColumnXPosition = _ctx.actualColumnXPosition
+                actualColumnXPosition = _ctx.actualColumnXPosition,
+                movePlayerTo = _movePlayerTo
             });
         }
     }

@@ -11,6 +11,7 @@ namespace CodeBase.Game.Gameplay.Stick
             public ContentProvider contentProvider; 
             public IReadOnlyReactiveProperty<float> actualColumnXPosition;
             public ReactiveProperty<LevelFlowState> levelFlowState;
+            public ReactiveProperty<float> stickLength;
         }
 
         private readonly Ctx _ctx;
@@ -28,7 +29,8 @@ namespace CodeBase.Game.Gameplay.Stick
             {
                 contentProvider = _ctx.contentProvider,
                 actualColumnXPosition = _ctx.actualColumnXPosition,
-                levelFlowState = _ctx.levelFlowState
+                levelFlowState = _ctx.levelFlowState,
+                stickLength = _ctx.stickLength
             };
             _pm = new StickPm(stickPmCtx);
             AddUnsafe(_pm);
