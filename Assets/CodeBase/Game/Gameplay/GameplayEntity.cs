@@ -45,7 +45,8 @@ namespace CodeBase.Game.Gameplay
             var gameplayPmCtx = new GameplayPm.Ctx()
             {
                 startGame = _ctx.startGame,
-                levelFlowState = _ctx.levelFlowState
+                levelFlowState = _ctx.levelFlowState,
+                startLevel = _ctx.startLevel
             };
             _pm = new GameplayPm(gameplayPmCtx);
             AddUnsafe(_pm);

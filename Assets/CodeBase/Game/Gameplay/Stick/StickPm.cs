@@ -1,6 +1,7 @@
 using System;
 using CodeBase.Data;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using External.Framework;
 using UniRx;
 using UnityEngine;
@@ -19,7 +20,7 @@ namespace CodeBase.Game.Gameplay.Stick
 
         private readonly Ctx _ctx;
         private StickView _actualStick;
-        private CompositeDisposable _touchHandlers;
+        private CompositeDisposable _clickHandlers;
       
 
         public StickPm(Ctx ctx)
@@ -34,17 +35,7 @@ namespace CodeBase.Game.Gameplay.Stick
             {
                 case LevelFlowState.PlayerIdle:
                     SpawnStick();
-                    _touchHandlers = new CompositeDisposable();
-                    _touchHandlers = new CompositeDisposable();
-                    Observable.EveryUpdate()
-                        .Where(_ => Input.GetMouseButtonDown(0)).Subscribe((_) =>
-                        {
-                            HandleClickDown();
-                        }).AddTo(_touchHandlers);
-                    Observable.EveryUpdate()
-                        .Where(_ => Input.GetMouseButtonUp(0)).Subscribe(
-                            (_) => _ctx.levelFlowState.Value = LevelFlowState.StickFalls)
-                        .AddTo(_touchHandlers);
+                    MakeTemporarySubscription();
                     break;
                 case LevelFlowState.StickGrowsUp:
                     break;
@@ -63,18 +54,39 @@ namespace CodeBase.Game.Gameplay.Stick
                 new Vector2(_ctx.actualColumnXPosition.Value + 1, Constant.PlayerYPosition - 0.5f), Quaternion.identity);
         }
 
-        private async void HandleClickDown()
+        private void MakeTemporarySubscription()
+        {
+            _clickHandlers = new CompositeDisposable();
+            _clickHandlers = new CompositeDisposable();
+            Observable.EveryUpdate()
+                .Where(_ => Input.GetMouseButtonDown(0)).Subscribe((_) =>
+                {
+                    GrowStickUp();
+                }).AddTo(_clickHandlers);
+            Observable.EveryUpdate()
+                .Where(_ => Input.GetMouseButtonUp(0)).Subscribe(
+                    (_) => RotateStick())
+                .AddTo(_clickHandlers); 
+        }
+
+        private async void GrowStickUp()
         {
             _ctx.levelFlowState.Value = LevelFlowState.StickGrowsUp;
             float stickHeight = 0;
             while (_ctx.levelFlowState.Value == LevelFlowState.StickGrowsUp)
             {
-                stickHeight += Time.deltaTime * 3;
+                stickHeight += Time.deltaTime * 6;
                 _actualStick.transform.localScale = new Vector3(0.5f, stickHeight, 1);
                 await UniTask.Yield();
             }
+        }
 
-            
+        private void RotateStick()
+        {
+            _ctx.levelFlowState.Value = LevelFlowState.StickFalls;
+            _actualStick.transform.DORotate(new Vector3(0, 0, -90f), 0.5f)
+                .OnComplete(() => _ctx.levelFlowState.Value = LevelFlowState.PlayerRun);
+            _clickHandlers.Dispose();
         }
 
     }

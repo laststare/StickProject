@@ -2,6 +2,7 @@ namespace CodeBase
 {
     public enum LevelFlowState
     {
+        None,
         PlayerIdle,
         StickGrowsUp,
         StickFalls,
