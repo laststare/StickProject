@@ -24,6 +24,7 @@ namespace CodeBase.Game.Gameplay
             public ReactiveProperty<float> actualColumnXPosition;
             public ReactiveProperty<float> nextColumnXPosition;
             public IReadOnlyReactiveTrigger showStartMenu;
+            public ReactiveProperty<bool> columnIsReachable;
         }
 
         private readonly Ctx _ctx;
@@ -32,7 +33,7 @@ namespace CodeBase.Game.Gameplay
         private PlayerEntity _playerEntity;
         private StickEntity _stickEntity;
         private readonly ReactiveProperty<float> _stickLength = new();
-        private readonly ReactiveProperty<bool> _columnIsReachable = new();
+        
 
 
         public GameplayEntity(Ctx ctx)
@@ -74,7 +75,7 @@ namespace CodeBase.Game.Gameplay
                 startLevel = _ctx.startLevel,
                 finishLevel = _ctx.finishLevel,
                 showStartMenu = _ctx.showStartMenu,
-                columnIsReachable = _columnIsReachable,
+                columnIsReachable = _ctx.columnIsReachable,
                 nextColumnXPosition = _ctx.nextColumnXPosition
             };
             _scoreCounterEntity = new ScoreCounterEntity(scoreCounterEntityCtx);
@@ -92,7 +93,7 @@ namespace CodeBase.Game.Gameplay
                 levelFlowState = _ctx.levelFlowState,
                 stickLength = _stickLength,
                 finishLevel = _ctx.finishLevel,
-                columnIsReachable = _columnIsReachable
+                columnIsReachable = _ctx.columnIsReachable
             };
             _playerEntity = new PlayerEntity(playerEntityCtx);
             AddUnsafe(_playerEntity);
@@ -107,6 +108,7 @@ namespace CodeBase.Game.Gameplay
                 levelFlowState = _ctx.levelFlowState,
                 stickLength = _stickLength,
                 startLevel = _ctx.startLevel,
+                columnIsReachable = _ctx.columnIsReachable
             };
             _stickEntity = new StickEntity(stickEntityCtx);
             AddUnsafe(_stickEntity);

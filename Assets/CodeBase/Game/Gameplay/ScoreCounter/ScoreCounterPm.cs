@@ -35,8 +35,9 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
             }));
             AddUnsafe(_ctx.columnIsReachable.Subscribe(x =>
             {
-                if(x)
-                    UpdateScore();
+                if (!x) return;
+                UpdateScore();
+                RemoveOneView();
             }));
         }
 
@@ -75,5 +76,12 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
         }
 
         private void ClearScore() => _currentScore = 0;
+
+        private void RemoveOneView()
+        {
+            if (_ctx.spawnedRewardViews.Count <= 2) return;
+            Object.Destroy(_ctx.spawnedRewardViews[0].gameObject);
+            _ctx.spawnedRewardViews.RemoveAt(0);
+        }
     }
 }

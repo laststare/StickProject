@@ -44,7 +44,7 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
                 columnIsReachable = _ctx.columnIsReachable,
                 contentProvider = _ctx.contentProvider,
                 spawnRewardView = _spawnRewardView,
-                spawnedRewardViews = _spawnedRewardViews
+                spawnedRewardViews = _spawnedRewardViews,
             };
             _pm = new ScoreCounterPm(scoreCounterPmCtx);
             AddUnsafe(_pm);

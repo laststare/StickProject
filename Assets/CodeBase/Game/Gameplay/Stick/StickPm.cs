@@ -22,6 +22,7 @@ namespace CodeBase.Game.Gameplay.Stick
             public ReactiveTrigger startStickRotation;
             public ReactiveCollection<GameObject> spawnedSticks;
             public IReadOnlyReactiveTrigger startLevel;
+            public IReadOnlyReactiveProperty<bool> columnIsReachable;
         }
 
         private readonly Ctx _ctx;
@@ -37,6 +38,11 @@ namespace CodeBase.Game.Gameplay.Stick
             }));
             AddUnsafe(_ctx.startLevel.Subscribe(DestroySticks));
             AddUnsafe(_ctx.stickIsDown.Subscribe(() => _ctx.levelFlowState.Value = LevelFlowState.PlayerRun));
+            AddUnsafe(_ctx.columnIsReachable.Subscribe(x =>
+            {
+                if(x) 
+                    RemoveOneView();
+            }));
         }
 
         private void TmpClickDownSubscription()
@@ -82,8 +88,12 @@ namespace CodeBase.Game.Gameplay.Stick
                 Object.Destroy(stick);
             _ctx.spawnedSticks.Clear();
         }
-
-        
+        private void RemoveOneView()
+        {
+            if (_ctx.spawnedSticks.Count <= 2) return;
+            Object.Destroy(_ctx.spawnedSticks[0].gameObject);
+            _ctx.spawnedSticks.RemoveAt(0);
+        }
 
     }
 }

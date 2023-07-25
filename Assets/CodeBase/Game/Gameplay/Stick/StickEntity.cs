@@ -15,6 +15,7 @@ namespace CodeBase.Game.Gameplay.Stick
             public ReactiveProperty<LevelFlowState> levelFlowState;
             public ReactiveProperty<float> stickLength;
             public IReadOnlyReactiveTrigger startLevel;
+            public IReadOnlyReactiveProperty<bool> columnIsReachable;
         }
 
         private readonly Ctx _ctx;
@@ -42,7 +43,8 @@ namespace CodeBase.Game.Gameplay.Stick
                 startStickRotation = _startStickRotation,
                 stickIsDown = _stickIsDown,
                 startLevel = _ctx.startLevel,
-                spawnedSticks = _spawnedSticks
+                spawnedSticks = _spawnedSticks,
+                columnIsReachable = _ctx.columnIsReachable
             };
             _pm = new StickPm(stickPmCtx);
             AddUnsafe(_pm);

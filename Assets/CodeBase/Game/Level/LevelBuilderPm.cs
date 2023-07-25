@@ -6,6 +6,7 @@ using External.Reactive;
 using UniRx;
 using Unity.VisualScripting;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace CodeBase.Game.Level
 {
@@ -18,6 +19,7 @@ namespace CodeBase.Game.Level
             public ReactiveProperty<float> actualColumnXPosition;
             public ReactiveProperty<float> nextColumnXPosition;
             public ReactiveProperty<LevelFlowState> levelFlowState;
+            public IReadOnlyReactiveProperty<bool> columnIsReachable;
         }
 
         private readonly Ctx _ctx;
@@ -30,6 +32,11 @@ namespace CodeBase.Game.Level
             AddUnsafe(_ctx.levelFlowState.Subscribe(x =>
             {
                 if (x == LevelFlowState.CameraRun) NextColumn();
+            }));
+            AddUnsafe(_ctx.columnIsReachable.Subscribe(x =>
+            {
+                if (x)
+                    RemoveOneColumn();
             }));
         }
 
@@ -61,6 +68,13 @@ namespace CodeBase.Game.Level
             _levelColumns.Clear();
             _ctx.actualColumnXPosition.Value = 0;
             _ctx.nextColumnXPosition.Value = 0;
+        }
+        
+        private void RemoveOneColumn()
+        {
+            if (_levelColumns.Count <= 2) return;
+            Object.Destroy(_levelColumns[0].gameObject);
+            _levelColumns.RemoveAt(0);
         }
     }
 }
