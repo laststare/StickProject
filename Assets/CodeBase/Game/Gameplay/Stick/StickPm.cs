@@ -23,71 +23,79 @@ namespace CodeBase.Game.Gameplay.Stick
         }
 
         private readonly Ctx _ctx;
-        private Transform _actualStick;
-        private List<GameObject> _spawnedSticks = new List<GameObject>();
+        private readonly List<GameObject> _spawnedSticks = new();
         private CompositeDisposable _clickHandlers;
-      
+        private readonly ReactiveTrigger _stickIsDown = new();
+        private readonly ReactiveTrigger _startStickGrow = new();
+        private readonly ReactiveTrigger _startStickRotation = new();
+
 
         public StickPm(Ctx ctx)
         {
             _ctx = ctx;
             AddUnsafe(_ctx.levelFlowState.Subscribe(x =>
             {
-                if(x == LevelFlowState.PlayerIdle)
+                if (x == LevelFlowState.PlayerIdle)
+                {
                     MakeTemporarySubscription();
+                }
             }));
             AddUnsafe(_ctx.startLevel.Subscribe(DestroySticks));
-        }
-
-        private Transform SpawnStick()
-        {
-            var stick = Object.Instantiate(_ctx.contentProvider.Views.StickView,
-                new Vector2(_ctx.actualColumnXPosition.Value + 1, Constant.PlayerYPosition - 0.5f),Quaternion.identity);
-            _spawnedSticks.Add(stick.gameObject);
-            return stick.transform;
+            AddUnsafe(_stickIsDown.Subscribe(() => _ctx.levelFlowState.Value = LevelFlowState.PlayerRun));
         }
 
         private void MakeTemporarySubscription()
         {
             _clickHandlers = new CompositeDisposable();
-            _clickHandlers = new CompositeDisposable();
             Observable.EveryUpdate()
-                .Where(_ => Input.GetMouseButtonDown(0)).Subscribe((_) =>
-                {
-                    GrowStickUp();
-                }).AddTo(_clickHandlers);
+                .Where(_ => Input.GetMouseButtonDown(0)).Subscribe(
+                    (_) =>
+                    {
+                        SpawnStick();
+                        GrowStickUp();
+                    }).AddTo(_clickHandlers);
+            
             Observable.EveryUpdate()
                 .Where(_ => Input.GetMouseButtonUp(0)).Subscribe(
-                    (_) => RotateStick())
+                    (_) =>
+                    {
+                        RotateStick();
+                        _clickHandlers.Dispose();
+                    })
                 .AddTo(_clickHandlers); 
         }
 
-        private async void GrowStickUp()
+        private void SpawnStick()
         {
-            _actualStick = SpawnStick();
-            _ctx.levelFlowState.Value = LevelFlowState.StickGrowsUp;
-            var stickHeight = 0f;
-            var stickWidth = _actualStick.transform.localScale.x;
-            while (_ctx.levelFlowState.Value == LevelFlowState.StickGrowsUp)
+            var stick = Object.Instantiate(_ctx.contentProvider.Views.StickView,
+                new Vector2(_ctx.actualColumnXPosition.Value + 1, Constant.PlayerYPosition - 0.5f),
+                Quaternion.identity);
+            stick.Init(new StickView.Ctx()
             {
-                stickHeight += Time.deltaTime * 6;
-                _actualStick.transform.localScale = new Vector3(stickWidth, stickHeight, 1);
-                await UniTask.Yield();
-            }
-            _ctx.stickLength.Value = stickHeight;
+                levelFlowState = _ctx.levelFlowState,
+                stickLength = _ctx.stickLength,
+                startStickGrow = _startStickGrow,
+                startStickRotation = _startStickRotation,
+                stickIsDown = _stickIsDown
+            });
+            _spawnedSticks.Add(stick.gameObject);
+        }
+
+        private void GrowStickUp()
+        {
+            _ctx.levelFlowState.Value = LevelFlowState.StickGrowsUp;
+            _startStickGrow.Notify();
         }
         
         private void RotateStick()
         {
             _ctx.levelFlowState.Value = LevelFlowState.StickFalls;
-            _actualStick.transform.DORotate(new Vector3(0, 0, -90f), 0.5f)
-                .OnComplete(() => _ctx.levelFlowState.Value = LevelFlowState.PlayerRun);
-            _clickHandlers.Dispose();
+            _startStickRotation.Notify();
         }
 
         private void DestroySticks()
         {
-            _spawnedSticks.ForEach(x => Object.Destroy(x));
+            _spawnedSticks.ForEach(Object.Destroy);
             _spawnedSticks.Clear();
         }
 

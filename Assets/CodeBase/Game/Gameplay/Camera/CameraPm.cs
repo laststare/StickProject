@@ -10,8 +10,7 @@ namespace CodeBase.Game.Gameplay.Camera
         {
             public ReactiveProperty<LevelFlowState> levelFlowState;
             public IReadOnlyReactiveProperty<float> actualColumnXPosition;
-            public ReactiveEvent<float> moveCameraTo;
-            public IReadOnlyReactiveTrigger startLevel;
+            public ReactiveEvent<float> moveCameraToNextColumn;
             public ReactiveTrigger cameraFinishMoving;
         }
 
@@ -24,18 +23,18 @@ namespace CodeBase.Game.Gameplay.Camera
             AddUnsafe(_ctx.levelFlowState.Subscribe(x =>
             {
                 if (x == LevelFlowState.CameraRun)
-                    SetCameraDestinationPoint();
+                    SetCameraDestinationPointToColumn();
             }));
-            AddUnsafe(_ctx.startLevel.Subscribe(SetCameraDestinationPoint));
             AddUnsafe(_ctx.cameraFinishMoving.Subscribe(() =>
             {
                 _ctx.levelFlowState.Value = LevelFlowState.PlayerIdle;
             }));
         }
 
-        private void SetCameraDestinationPoint()
+        private void SetCameraDestinationPointToColumn()
         {
-            _ctx.moveCameraTo.Notify(_ctx.actualColumnXPosition.Value + Constant.CameraOnColumnXOffset);
+            _ctx.moveCameraToNextColumn.Notify(_ctx.actualColumnXPosition.Value + Constant.CameraOnColumnXOffset);
         }
+        
     }
 }

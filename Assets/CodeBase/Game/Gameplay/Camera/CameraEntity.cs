@@ -19,7 +19,7 @@ namespace CodeBase.Game.Gameplay.Camera
         private readonly Ctx _ctx;
         private CameraPm _pm;
         private CameraView _view;
-        private readonly ReactiveEvent<float> _moveCameraTo = new();
+        private readonly ReactiveEvent<float> _moveCameraToNextColumn = new();
         private readonly ReactiveTrigger _cameraFinishMoving = new();
 
         public CameraEntity(Ctx ctx)
@@ -33,10 +33,9 @@ namespace CodeBase.Game.Gameplay.Camera
         {
             var cameraPmCtx = new CameraPm.Ctx()
             {
-                moveCameraTo = _moveCameraTo,
+                moveCameraToNextColumn = _moveCameraToNextColumn,
                 actualColumnXPosition = _ctx.actualColumnXPosition,
                 levelFlowState = _ctx.levelFlowState,
-                startLevel = _ctx.startLevel,
                 cameraFinishMoving = _cameraFinishMoving
             };
             _pm = new CameraPm(cameraPmCtx);
@@ -48,8 +47,9 @@ namespace CodeBase.Game.Gameplay.Camera
             _view = Object.Instantiate(_ctx.contentProvider.Views.CameraView);
             _view.Init(new CameraView.Ctx()
             {
-                moveCameraTo = _moveCameraTo,
-                cameraFinishMoving = _cameraFinishMoving
+                moveCameraToNextColumn = _moveCameraToNextColumn,
+                cameraFinishMoving = _cameraFinishMoving,
+                startLevel = _ctx.startLevel,
             });
         }
         

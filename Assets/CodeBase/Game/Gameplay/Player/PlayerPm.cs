@@ -35,7 +35,6 @@ namespace CodeBase.Game.Gameplay.Player
         private void SetPlayerDestinationPoint()
         {
             var moveDistance = _ctx.actualColumnXPosition.Value + 1 + _ctx.stickLength.Value;
-            Debug.Log($"length {_ctx.stickLength.Value} distance {moveDistance}");
             _isStickLengthCorrect = moveDistance >= _ctx.nextColumnXPosition.Value - 1 &&
                                     moveDistance <= _ctx.nextColumnXPosition.Value + 1;
             var playerDestination = _isStickLengthCorrect
