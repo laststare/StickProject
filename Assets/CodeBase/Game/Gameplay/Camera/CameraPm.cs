@@ -8,7 +8,7 @@ namespace CodeBase.Game.Gameplay.Camera
     {
         public struct Ctx
         {
-            public ReactiveProperty<LevelFlowState> levelFlowState;
+            public IReadOnlyReactiveProperty<LevelFlowState> levelFlowState;
             public IReadOnlyReactiveProperty<float> actualColumnXPosition;
             public ReactiveEvent<float> moveCameraToNextColumn;
             public ReactiveTrigger cameraFinishMoving;

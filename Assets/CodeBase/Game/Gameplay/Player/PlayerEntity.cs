@@ -14,7 +14,7 @@ namespace CodeBase.Game.Gameplay.Player
             public IReadOnlyReactiveTrigger startLevel;
             public IReadOnlyReactiveProperty<float> actualColumnXPosition;
             public IReadOnlyReactiveProperty<float> nextColumnXPosition;
-            public ReactiveProperty<LevelFlowState> levelFlowState;
+            public IReadOnlyReactiveProperty<LevelFlowState> levelFlowState;
             public ReactiveProperty<float> stickLength;
             public ReactiveTrigger finishLevel;
             public ReactiveProperty<bool> columnIsReachable;

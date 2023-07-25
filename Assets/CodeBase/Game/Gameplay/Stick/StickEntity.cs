@@ -12,7 +12,7 @@ namespace CodeBase.Game.Gameplay.Stick
         {
             public ContentProvider contentProvider; 
             public IReadOnlyReactiveProperty<float> actualColumnXPosition;
-            public ReactiveProperty<LevelFlowState> levelFlowState;
+            public IReadOnlyReactiveProperty<LevelFlowState> levelFlowState;
             public ReactiveProperty<float> stickLength;
             public IReadOnlyReactiveTrigger startLevel;
             public IReadOnlyReactiveProperty<bool> columnIsReachable;

@@ -11,7 +11,7 @@ namespace CodeBase.Game.Gameplay
         public struct Ctx
         {
             public ReactiveProperty<LevelFlowState> levelFlowState;
-            public ReactiveEvent<LevelFlowState> changeLevelFlowState;
+            public IReadOnlyReactiveEvent<LevelFlowState> changeLevelFlowState;
             public ReactiveTrigger startLevel;
             public ReactiveTrigger startGame;
         }

@@ -11,7 +11,7 @@ namespace CodeBase.Game.Gameplay.Camera
         public struct Ctx
         {
             public ContentProvider contentProvider;
-            public ReactiveProperty<LevelFlowState> levelFlowState;
+            public IReadOnlyReactiveProperty<LevelFlowState> levelFlowState;
             public IReadOnlyReactiveTrigger startLevel;
             public IReadOnlyReactiveProperty<float> actualColumnXPosition;
             public ReactiveEvent<LevelFlowState> changeLevelFlowState;
