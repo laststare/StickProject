@@ -66,7 +66,7 @@ namespace CodeBase.Game
                 actualColumnXPosition = _actualColumnXPosition,
                 nextColumnXPosition = _nextColumnXPosition,
                 showStartMenu = _showStartMenu,
-                columnIsReachable = _columnIsReachable
+                columnIsReachable = _columnIsReachable,
             };
             _gameplayEntity = new GameplayEntity(gameplayEntityCtx);
             AddUnsafe(_gameplayEntity);
@@ -82,7 +82,6 @@ namespace CodeBase.Game
                 startGame = _startGame,
                 finishLevel = _finishLevel,
                 showStartMenu = _showStartMenu,
-                levelFlowState = _levelFlowState
             };
             _mainMenuEntity = new MainMenuEntity(mainMenuEntityCtx);
             AddUnsafe(_mainMenuEntity);

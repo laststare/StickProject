@@ -14,7 +14,6 @@ namespace CodeBase.Game.MainMenu
             public ReactiveEvent<MainMenuButton> menuButtonClicked;
             public ReactiveTrigger startLevel;
             public ReactiveTrigger showStartMenu;
-            public ReactiveProperty<LevelFlowState> levelFlowState;
         } 
         
         private readonly Ctx _ctx;
@@ -44,7 +43,6 @@ namespace CodeBase.Game.MainMenu
         private void StartLevel()
         {
             _ctx.startLevel.Notify();
-            _ctx.levelFlowState.Value = LevelFlowState.PlayerIdle;
         }
     }
 }

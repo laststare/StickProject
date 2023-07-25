@@ -13,11 +13,12 @@ namespace CodeBase.Game.Gameplay.Player
             public IReadOnlyReactiveProperty<float> actualColumnXPosition;
             public IReadOnlyReactiveProperty<float> nextColumnXPosition;
             public ReactiveEvent<float> movePlayerTo;
-            public ReactiveProperty<LevelFlowState> levelFlowState;
+            public IReadOnlyReactiveProperty<LevelFlowState> levelFlowState;
             public IReadOnlyReactiveProperty<float> stickLength;
             public IReadOnlyReactiveTrigger playerFinishMoving;
             public ReactiveTrigger finishLevel;
             public ReactiveProperty<bool> columnIsReachable;
+            public ReactiveEvent<LevelFlowState> changeLevelFlowState;
         }
         private readonly Ctx _ctx;
 
@@ -46,7 +47,7 @@ namespace CodeBase.Game.Gameplay.Player
         private void PlayerOnNextColumn()
         {
             if (_ctx.columnIsReachable.Value)
-                _ctx.levelFlowState.Value = LevelFlowState.CameraRun;
+                _ctx.changeLevelFlowState.Notify(LevelFlowState.CameraRun);
             else
                 _ctx.finishLevel.Notify();
         }

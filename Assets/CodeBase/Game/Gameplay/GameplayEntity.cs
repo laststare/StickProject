@@ -17,7 +17,7 @@ namespace CodeBase.Game.Gameplay
         {
             public ContentProvider contentProvider;
             public RectTransform uiRoot;
-            public IReadOnlyReactiveTrigger startLevel;
+            public ReactiveTrigger startLevel;
             public ReactiveTrigger finishLevel;
             public ReactiveTrigger startGame;
             public ReactiveProperty<LevelFlowState> levelFlowState;
@@ -28,27 +28,35 @@ namespace CodeBase.Game.Gameplay
         }
 
         private readonly Ctx _ctx;
+        private GameFlowPm _gameFlowPm;
         private CameraEntity _cameraEntity;
         private ScoreCounterEntity _scoreCounterEntity;
         private PlayerEntity _playerEntity;
         private StickEntity _stickEntity;
         private readonly ReactiveProperty<float> _stickLength = new();
-        
+        private readonly ReactiveEvent<LevelFlowState> _changeLevelFlowState = new();
         
         public GameplayEntity(Ctx ctx)
         {
             _ctx = ctx;
+            CreateGameFlowPm();
             CreateCameraEntity();
             CreateScoreCounter();
             CreatePlayerEntity();
             CreateStickEntity();
-            StartGame();
         }
-
-        private async void StartGame()
+        
+        private void CreateGameFlowPm()
         {
-            await UniTask.DelayFrame(1); 
-            _ctx.startGame.Notify(); 
+            var gameFlowPmCtx = new GameFlowPm.Ctx()
+            {
+                levelFlowState = _ctx.levelFlowState,
+                changeLevelFlowState = _changeLevelFlowState,
+                startLevel = _ctx.startLevel,
+                startGame = _ctx.startGame
+            };
+            _gameFlowPm = new GameFlowPm(gameFlowPmCtx);
+            AddUnsafe(_gameFlowPm);
         }
 
         private void CreateCameraEntity()
@@ -58,7 +66,8 @@ namespace CodeBase.Game.Gameplay
                 contentProvider = _ctx.contentProvider,
                 startLevel = _ctx.startLevel,
                 levelFlowState = _ctx.levelFlowState,
-                actualColumnXPosition = _ctx.actualColumnXPosition
+                actualColumnXPosition = _ctx.actualColumnXPosition,
+                changeLevelFlowState = _changeLevelFlowState
             };
             _cameraEntity = new CameraEntity(cameraEntityCtx);
             AddUnsafe(_cameraEntity);
@@ -92,7 +101,8 @@ namespace CodeBase.Game.Gameplay
                 levelFlowState = _ctx.levelFlowState,
                 stickLength = _stickLength,
                 finishLevel = _ctx.finishLevel,
-                columnIsReachable = _ctx.columnIsReachable
+                columnIsReachable = _ctx.columnIsReachable,
+                changeLevelFlowState = _changeLevelFlowState
             };
             _playerEntity = new PlayerEntity(playerEntityCtx);
             AddUnsafe(_playerEntity);
@@ -107,7 +117,8 @@ namespace CodeBase.Game.Gameplay
                 levelFlowState = _ctx.levelFlowState,
                 stickLength = _stickLength,
                 startLevel = _ctx.startLevel,
-                columnIsReachable = _ctx.columnIsReachable
+                columnIsReachable = _ctx.columnIsReachable,
+                changeLevelFlowState = _changeLevelFlowState
             };
             _stickEntity = new StickEntity(stickEntityCtx);
             AddUnsafe(_stickEntity);

@@ -15,7 +15,7 @@ namespace CodeBase.Game.Gameplay.Stick
     {
         public struct Ctx
         {
-            public ReactiveProperty<LevelFlowState> levelFlowState;
+            public IReadOnlyReactiveProperty<LevelFlowState> levelFlowState;
             public ReactiveTrigger createView;
             public ReactiveTrigger stickIsDown;
             public ReactiveTrigger startStickGrow ;
@@ -23,6 +23,7 @@ namespace CodeBase.Game.Gameplay.Stick
             public ReactiveCollection<GameObject> spawnedSticks;
             public IReadOnlyReactiveTrigger startLevel;
             public IReadOnlyReactiveProperty<bool> columnIsReachable;
+            public ReactiveEvent<LevelFlowState> changeLevelFlowState;
         }
 
         private readonly Ctx _ctx;
@@ -37,7 +38,8 @@ namespace CodeBase.Game.Gameplay.Stick
                 if (x == LevelFlowState.PlayerIdle) TmpClickDownSubscription();
             }));
             AddUnsafe(_ctx.startLevel.Subscribe(DestroySticks));
-            AddUnsafe(_ctx.stickIsDown.Subscribe(() => _ctx.levelFlowState.Value = LevelFlowState.PlayerRun));
+            AddUnsafe(_ctx.stickIsDown.Subscribe(() => 
+                _ctx.changeLevelFlowState.Notify(LevelFlowState.PlayerRun)));
             AddUnsafe(_ctx.columnIsReachable.Subscribe(x =>
             {
                 if(x) 
@@ -72,13 +74,13 @@ namespace CodeBase.Game.Gameplay.Stick
 
         private void GrowStickUp()
         {
-            _ctx.levelFlowState.Value = LevelFlowState.StickGrowsUp;
+            _ctx.changeLevelFlowState.Notify(LevelFlowState.StickGrowsUp);
             _ctx.startStickGrow.Notify();
         }
         
         private void RotateStick()
         {
-            _ctx.levelFlowState.Value = LevelFlowState.StickFalls;
+            _ctx.changeLevelFlowState.Notify(LevelFlowState.StickFalls);
             _ctx.startStickRotation.Notify();
         }
         

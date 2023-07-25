@@ -14,6 +14,7 @@ namespace CodeBase.Game.Gameplay.Camera
             public ReactiveProperty<LevelFlowState> levelFlowState;
             public IReadOnlyReactiveTrigger startLevel;
             public IReadOnlyReactiveProperty<float> actualColumnXPosition;
+            public ReactiveEvent<LevelFlowState> changeLevelFlowState;
         }
 
         private readonly Ctx _ctx;
@@ -36,7 +37,8 @@ namespace CodeBase.Game.Gameplay.Camera
                 moveCameraToNextColumn = _moveCameraToNextColumn,
                 actualColumnXPosition = _ctx.actualColumnXPosition,
                 levelFlowState = _ctx.levelFlowState,
-                cameraFinishMoving = _cameraFinishMoving
+                cameraFinishMoving = _cameraFinishMoving,
+                changeLevelFlowState = _ctx.changeLevelFlowState
             };
             _pm = new CameraPm(cameraPmCtx);
             AddUnsafe(_pm);
