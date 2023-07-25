@@ -37,6 +37,7 @@ namespace CodeBase.Game.Gameplay.Player
         {
             var playerPmCtx = new PlayerPm.Ctx()
             {
+                contentProvider = _ctx.contentProvider,
                 nextColumnXPosition = _ctx.nextColumnXPosition,
                 movePlayerTo = _movePlayerTo,
                 levelFlowState = _ctx.levelFlowState,

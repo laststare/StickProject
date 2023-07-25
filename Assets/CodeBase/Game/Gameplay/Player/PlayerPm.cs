@@ -1,3 +1,4 @@
+using CodeBase.Data;
 using External.Framework;
 using External.Reactive;
 using UniRx;
@@ -9,6 +10,7 @@ namespace CodeBase.Game.Gameplay.Player
     {
         public struct Ctx
         {
+            public ContentProvider contentProvider; 
             public IReadOnlyReactiveProperty<float> actualColumnXPosition;
             public IReadOnlyReactiveProperty<float> nextColumnXPosition;
             public ReactiveEvent<float> movePlayerTo;
@@ -35,8 +37,8 @@ namespace CodeBase.Game.Gameplay.Player
         private void SetPlayerDestinationPoint()
         {
             var moveDistance = _ctx.actualColumnXPosition.Value + 1 + _ctx.stickLength.Value;
-            _isStickLengthCorrect = moveDistance >= _ctx.nextColumnXPosition.Value - 1 &&
-                                    moveDistance <= _ctx.nextColumnXPosition.Value + 1;
+            _isStickLengthCorrect = moveDistance >= _ctx.nextColumnXPosition.Value - 1.25f &&
+                                    moveDistance <= _ctx.nextColumnXPosition.Value + 1.25f;
             var playerDestination = _isStickLengthCorrect
                 ? _ctx.nextColumnXPosition.Value + Constant.PlayerOnColumnXOffset
                 : moveDistance;
@@ -47,7 +49,7 @@ namespace CodeBase.Game.Gameplay.Player
         {
             if (_isStickLengthCorrect)
             {
-                _ctx.addScore.Notify(10);
+                _ctx.addScore.Notify(_ctx.contentProvider.Settings.RewardConfig.OneColumnReward);
                 _ctx.levelFlowState.Value = LevelFlowState.CameraRun;
             }
             else 

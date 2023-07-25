@@ -24,30 +24,32 @@ namespace CodeBase.Data
         [Serializable]
         public class UIViewsContent
         {
-            public MainMenuView MainMenuView => mainMenuView;
-            public ScoreCounterView ScoreCounterView => scoreCounterView;
             [SerializeField] private MainMenuView mainMenuView;
             [SerializeField] private ScoreCounterView scoreCounterView;
+            public MainMenuView MainMenuView => mainMenuView;
+            public ScoreCounterView ScoreCounterView => scoreCounterView;
+            
         }
 
         [Serializable]
         public class ViewsContent
         { 
-            public GameObject Levelcolumn => levelcolumn;
-            public CameraView CameraView => cameraView;
-            public PlayerView PlayerView => playerView;
-            public StickView StickView => stickView;
             [SerializeField] private GameObject levelcolumn;
             [SerializeField] private CameraView cameraView;
             [SerializeField] private PlayerView playerView;
             [SerializeField] private StickView stickView;
+            public GameObject Levelcolumn => levelcolumn;
+            public CameraView CameraView => cameraView;
+            public PlayerView PlayerView => playerView;
+            public StickView StickView => stickView;
+           
         }
 
         [Serializable]
         public class SettingsContent
         {
-            public LevelConfig LevelConfig => levelConfig;
-            [SerializeField] private LevelConfig levelConfig;
+            [SerializeField] private RewardConfig rewardConfig;
+            public RewardConfig RewardConfig => rewardConfig;
         }
     }
 }

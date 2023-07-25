@@ -21,4 +21,4 @@ MonoBehaviour:
     mainMenuView: {fileID: 2233702632769722541, guid: 706f9760273b642c099f22228c4049ce, type: 3}
     scoreCounterView: {fileID: 7807588281789143394, guid: 91a8b2cde3f9b4421a6f95a10334ab60, type: 3}
   settings:
-    levelConfig: {fileID: 11400000, guid: f31cc783aed8d4883bc30600be8ee0f5, type: 2}
+    rewardConfig: {fileID: 11400000, guid: 49f9c33383ea64f98bb37405013434f4, type: 2}
