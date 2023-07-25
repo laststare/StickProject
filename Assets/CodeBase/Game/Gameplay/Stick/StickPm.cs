@@ -15,19 +15,18 @@ namespace CodeBase.Game.Gameplay.Stick
     {
         public struct Ctx
         {
-            public ContentProvider contentProvider; 
-            public IReadOnlyReactiveProperty<float> actualColumnXPosition;
             public ReactiveProperty<LevelFlowState> levelFlowState;
-            public ReactiveProperty<float> stickLength;
+            public ReactiveTrigger createView;
+            public ReactiveTrigger stickIsDown;
+            public ReactiveTrigger startStickGrow ;
+            public ReactiveTrigger startStickRotation;
+            public ReactiveCollection<GameObject> spawnedSticks;
             public IReadOnlyReactiveTrigger startLevel;
         }
 
         private readonly Ctx _ctx;
-        private readonly List<GameObject> _spawnedSticks = new();
+      
         private CompositeDisposable _clickHandlers;
-        private readonly ReactiveTrigger _stickIsDown = new();
-        private readonly ReactiveTrigger _startStickGrow = new();
-        private readonly ReactiveTrigger _startStickRotation = new();
 
 
         public StickPm(Ctx ctx)
@@ -35,13 +34,10 @@ namespace CodeBase.Game.Gameplay.Stick
             _ctx = ctx;
             AddUnsafe(_ctx.levelFlowState.Subscribe(x =>
             {
-                if (x == LevelFlowState.PlayerIdle)
-                {
-                    MakeTemporarySubscription();
-                }
+                if (x == LevelFlowState.PlayerIdle) MakeTemporarySubscription();
             }));
             AddUnsafe(_ctx.startLevel.Subscribe(DestroySticks));
-            AddUnsafe(_stickIsDown.Subscribe(() => _ctx.levelFlowState.Value = LevelFlowState.PlayerRun));
+            AddUnsafe(_ctx.stickIsDown.Subscribe(() => _ctx.levelFlowState.Value = LevelFlowState.PlayerRun));
         }
 
         private void MakeTemporarySubscription()
@@ -51,7 +47,7 @@ namespace CodeBase.Game.Gameplay.Stick
                 .Where(_ => Input.GetMouseButtonDown(0)).Subscribe(
                     (_) =>
                     {
-                        SpawnStick();
+                        _ctx.createView.Notify();
                         GrowStickUp();
                     }).AddTo(_clickHandlers);
             
@@ -64,40 +60,27 @@ namespace CodeBase.Game.Gameplay.Stick
                     })
                 .AddTo(_clickHandlers); 
         }
-
-        private void SpawnStick()
-        {
-            var stick = Object.Instantiate(_ctx.contentProvider.Views.StickView,
-                new Vector2(_ctx.actualColumnXPosition.Value + 1, Constant.PlayerYPosition - 0.5f),
-                Quaternion.identity);
-            stick.Init(new StickView.Ctx()
-            {
-                levelFlowState = _ctx.levelFlowState,
-                stickLength = _ctx.stickLength,
-                startStickGrow = _startStickGrow,
-                startStickRotation = _startStickRotation,
-                stickIsDown = _stickIsDown
-            });
-            _spawnedSticks.Add(stick.gameObject);
-        }
-
+        
         private void GrowStickUp()
         {
             _ctx.levelFlowState.Value = LevelFlowState.StickGrowsUp;
-            _startStickGrow.Notify();
+            _ctx.startStickGrow.Notify();
         }
         
         private void RotateStick()
         {
             _ctx.levelFlowState.Value = LevelFlowState.StickFalls;
-            _startStickRotation.Notify();
+            _ctx.startStickRotation.Notify();
         }
-
+        
         private void DestroySticks()
         {
-            _spawnedSticks.ForEach(Object.Destroy);
-            _spawnedSticks.Clear();
+            foreach (var stick in _ctx.spawnedSticks) 
+                Object.Destroy(stick);
+            _ctx.spawnedSticks.Clear();
         }
+
+        
 
     }
 }

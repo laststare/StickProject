@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using CodeBase.Data;
 using External.Framework;
 using External.Reactive;
 using UniRx;
+using UnityEngine;
 
 namespace CodeBase.Game.Gameplay.Stick
 {
@@ -18,25 +20,50 @@ namespace CodeBase.Game.Gameplay.Stick
 
         private readonly Ctx _ctx;
         private StickPm _pm;
+        private readonly ReactiveTrigger _createView = new();
+        private readonly ReactiveCollection<GameObject> _spawnedSticks = new();
+        private readonly ReactiveTrigger _stickIsDown = new();
+        private readonly ReactiveTrigger _startStickGrow = new();
+        private readonly ReactiveTrigger _startStickRotation = new();
         
         public StickEntity(Ctx ctx)
         {
             _ctx = ctx;
             CreatePm();
+            AddUnsafe(_createView.Subscribe(CreateStickView));
         }
 
         private void CreatePm()
         {
             var stickPmCtx = new StickPm.Ctx()
             {
-                contentProvider = _ctx.contentProvider,
-                actualColumnXPosition = _ctx.actualColumnXPosition,
                 levelFlowState = _ctx.levelFlowState,
-                stickLength = _ctx.stickLength,
+                createView = _createView,
+                startStickGrow = _startStickGrow,
+                startStickRotation = _startStickRotation,
+                stickIsDown = _stickIsDown,
                 startLevel = _ctx.startLevel,
+                spawnedSticks = _spawnedSticks
             };
             _pm = new StickPm(stickPmCtx);
             AddUnsafe(_pm);
         }
+
+        private void CreateStickView()
+        {
+            var stick = Object.Instantiate(_ctx.contentProvider.Views.StickView,
+                new Vector2(_ctx.actualColumnXPosition.Value + 1, Constant.PlayerYPosition - 0.5f),
+                Quaternion.identity);
+            stick.Init(new StickView.Ctx()
+            {
+                levelFlowState = _ctx.levelFlowState,
+                stickLength = _ctx.stickLength,
+                startStickGrow = _startStickGrow,
+                startStickRotation = _startStickRotation,
+                stickIsDown = _stickIsDown
+            });
+            _spawnedSticks.Add(stick.gameObject);
+        }
+        
     }
 }

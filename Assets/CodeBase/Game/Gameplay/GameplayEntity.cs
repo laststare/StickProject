@@ -27,7 +27,6 @@ namespace CodeBase.Game.Gameplay
         }
 
         private readonly Ctx _ctx;
-        private GameplayPm _pm;
         private CameraEntity _cameraEntity;
         private ScoreCounterEntity _scoreCounterEntity;
         private PlayerEntity _playerEntity;
@@ -39,7 +38,6 @@ namespace CodeBase.Game.Gameplay
         public GameplayEntity(Ctx ctx)
         {
             _ctx = ctx;
-            CreatePm();
             CreateCameraEntity();
             CreateScoreCounter();
             CreatePlayerEntity();
@@ -51,17 +49,6 @@ namespace CodeBase.Game.Gameplay
         {
             await UniTask.DelayFrame(1); 
             _ctx.startGame.Notify(); 
-        }
-
-        private void CreatePm()
-        {
-            var gameplayPmCtx = new GameplayPm.Ctx()
-            {
-                levelFlowState = _ctx.levelFlowState,
-                startLevel = _ctx.startLevel,
-            };
-            _pm = new GameplayPm(gameplayPmCtx);
-            AddUnsafe(_pm);
         }
 
         private void CreateCameraEntity()
