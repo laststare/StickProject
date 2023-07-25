@@ -10,7 +10,6 @@ namespace CodeBase.Game
     {
         public struct Ctx
         {
-            public ReactiveTrigger startGame;
             public ReactiveProperty<LevelFlowState> levelFlowState;
             public IReadOnlyReactiveTrigger startLevel;
         }
@@ -20,16 +19,8 @@ namespace CodeBase.Game
         public GameplayPm(Ctx ctx)
         {
             _ctx = ctx;
-            StartGame();
-            AddUnsafe(_ctx.startLevel.Subscribe(
-                () => _ctx.levelFlowState.Value = LevelFlowState.PlayerIdle));
+           
         }
         
-
-        private async void StartGame()
-        {
-            await UniTask.DelayFrame(1); 
-            _ctx.startGame.Notify();
-        }
     }
 }

@@ -17,7 +17,7 @@ namespace CodeBase.Game.Gameplay.Camera
         public void Init(Ctx ctx)
         {
             _ctx = ctx;
-            _ctx.moveCameraTo.SubscribeWithSkip(x => transform.DOMoveX(x, 2).OnComplete(() =>
+            _ctx.moveCameraTo.SubscribeWithSkip(x => transform.DOMoveX(x, 1).OnComplete(() =>
             {
                 _ctx.cameraFinishMoving.Notify();
             })).AddTo(this);

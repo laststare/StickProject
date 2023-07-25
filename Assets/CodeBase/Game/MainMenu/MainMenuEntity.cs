@@ -1,6 +1,7 @@
 using CodeBase.Data;
 using External.Framework;
 using External.Reactive;
+using UniRx;
 using UnityEngine;
 
 namespace CodeBase.Game.MainMenu
@@ -15,6 +16,7 @@ namespace CodeBase.Game.MainMenu
              public IReadOnlyReactiveTrigger startGame;
              public IReadOnlyReactiveTrigger finishLevel;
              public ReactiveTrigger showStartMenu;
+             public ReactiveProperty<LevelFlowState> levelFlowState;
         } 
         
         private readonly Ctx _ctx;
@@ -35,7 +37,8 @@ namespace CodeBase.Game.MainMenu
             {
                 menuButtonClicked = _menuButtonClicked,
                 startLevel = _ctx.startLevel,
-                showStartMenu = _ctx.showStartMenu
+                showStartMenu = _ctx.showStartMenu,
+                levelFlowState = _ctx.levelFlowState
             };
             _pm = new MainMenuPm(mainMenuPmCtx);
             AddUnsafe(_pm);

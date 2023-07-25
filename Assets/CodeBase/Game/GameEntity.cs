@@ -79,7 +79,8 @@ namespace CodeBase.Game
                 startLevel = _startLevel,
                 startGame = _startGame,
                 finishLevel = _finishLevel,
-                showStartMenu = _showStartMenu
+                showStartMenu = _showStartMenu,
+                levelFlowState = _levelFlowState
             };
             _mainMenuEntity = new MainMenuEntity(mainMenuEntityCtx);
             AddUnsafe(_mainMenuEntity);

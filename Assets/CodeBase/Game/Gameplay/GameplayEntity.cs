@@ -3,6 +3,7 @@ using CodeBase.Game.Gameplay.Camera;
 using CodeBase.Game.Gameplay.Player;
 using CodeBase.Game.Gameplay.ScoreCounter;
 using CodeBase.Game.Gameplay.Stick;
+using Cysharp.Threading.Tasks;
 using External.Framework;
 using External.Reactive;
 using UniRx;
@@ -43,13 +44,19 @@ namespace CodeBase.Game.Gameplay
             CreateScoreCounter();
             CreatePlayerEntity();
             CreateStickEntity();
+            StartGame();
+        }
+
+        private async void StartGame()
+        {
+            await UniTask.DelayFrame(1); 
+            _ctx.startGame.Notify(); 
         }
 
         private void CreatePm()
         {
             var gameplayPmCtx = new GameplayPm.Ctx()
             {
-                startGame = _ctx.startGame,
                 levelFlowState = _ctx.levelFlowState,
                 startLevel = _ctx.startLevel,
             };

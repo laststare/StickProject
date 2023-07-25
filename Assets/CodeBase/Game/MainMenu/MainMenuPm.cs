@@ -2,6 +2,7 @@ using System;
 using System.Net.NetworkInformation;
 using External.Framework;
 using External.Reactive;
+using UniRx;
 
 namespace CodeBase.Game.MainMenu
 {
@@ -12,6 +13,7 @@ namespace CodeBase.Game.MainMenu
             public ReactiveEvent<MainMenuButton> menuButtonClicked;
             public ReactiveTrigger startLevel;
             public ReactiveTrigger showStartMenu;
+            public ReactiveProperty<LevelFlowState> levelFlowState;
         } 
         
         private readonly Ctx _ctx;
@@ -27,15 +29,21 @@ namespace CodeBase.Game.MainMenu
             switch (button)
             {
                 case MainMenuButton.StartGame:
-                        _ctx.startLevel.Notify();
+                    StartLevel();
                     break;
                 case MainMenuButton.RestartGame:
-                        _ctx.startLevel.Notify();
+                    StartLevel();
                     break;
                 case MainMenuButton.BackToStartScreen:
                         _ctx.showStartMenu.Notify();
                     break;
             }
+        }
+
+        private void StartLevel()
+        {
+            _ctx.startLevel.Notify();
+            _ctx.levelFlowState.Value = LevelFlowState.PlayerIdle;
         }
     }
 }
