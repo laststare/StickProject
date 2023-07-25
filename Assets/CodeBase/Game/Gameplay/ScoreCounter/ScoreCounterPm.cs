@@ -1,7 +1,7 @@
-using System;
-using CodeBase.Game.Gameplay.Stick;
+using CodeBase.Data;
 using External.Framework;
 using External.Reactive;
+using UniRx;
 using UnityEngine;
 
 namespace CodeBase.Game.Gameplay.ScoreCounter
@@ -10,11 +10,15 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
     {
         public struct Ctx
         {
+            public ContentProvider contentProvider;
             public ReactiveEvent<string, string> showScore;
             public IReadOnlyReactiveTrigger startGame;
-            public ReactiveEvent<int> addScore;
             public IReadOnlyReactiveTrigger finishLevel;
+            public IReadOnlyReactiveProperty<bool> columnIsReachable;
+            public ReactiveCollection<RewardView> spawnedRewardViews;
+            public ReactiveTrigger spawnRewardView;
         }
+        
         private readonly Ctx _ctx;
         private int _currentScore, _bestScore;
 
@@ -22,8 +26,18 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
         {
             _ctx = ctx;
             AddUnsafe(_ctx.startGame.Subscribe(GetSavedScore));
-            AddUnsafe(_ctx.addScore.SubscribeWithSkip(UpdateScore));
-            AddUnsafe(_ctx.finishLevel.Subscribe(SendScoreToView));
+            AddUnsafe(_ctx.finishLevel.Subscribe(() =>
+            {
+                UpdateBestScore();
+                SendScoreToView();
+                ClearScore();
+                DestroyRewardView();
+            }));
+            AddUnsafe(_ctx.columnIsReachable.Subscribe(x =>
+            {
+                if(x)
+                    UpdateScore();
+            }));
         }
 
         private void GetSavedScore()
@@ -39,18 +53,27 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
             _ctx.showScore.Notify(bestText, actualText);
         }
 
-        private void UpdateScore(int points)
+        private void UpdateScore()
         {
-            _currentScore += points;
-            Debug.Log($"current score is {_currentScore}");
-            if (_currentScore > _bestScore)
-                UpdateBestScore();
+            _currentScore += _ctx.contentProvider.Settings.RewardConfig.OneColumnReward;
+            _ctx.spawnRewardView.Notify();
         }
 
         private void UpdateBestScore()
         {
+            if (_currentScore <= _bestScore)
+                return;
             _bestScore = _currentScore;
             PlayerPrefs.SetInt(Constant.SavedScore, _bestScore);
         }
+
+        private void DestroyRewardView()
+        {
+            foreach (var view in _ctx.spawnedRewardViews) 
+                Object.Destroy(view.gameObject);
+            _ctx.spawnedRewardViews.Clear();
+        }
+
+        private void ClearScore() => _currentScore = 0;
     }
 }

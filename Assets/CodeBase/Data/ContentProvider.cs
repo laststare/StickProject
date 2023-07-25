@@ -38,11 +38,12 @@ namespace CodeBase.Data
             [SerializeField] private CameraView cameraView;
             [SerializeField] private PlayerView playerView;
             [SerializeField] private StickView stickView;
+            [SerializeField] private RewardView rewardView;
             public GameObject Levelcolumn => levelcolumn;
             public CameraView CameraView => cameraView;
             public PlayerView PlayerView => playerView;
             public StickView StickView => stickView;
-           
+            public RewardView RewardView => rewardView;
         }
 
         [Serializable]

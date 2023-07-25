@@ -32,7 +32,7 @@ namespace CodeBase.Game.Gameplay
         private PlayerEntity _playerEntity;
         private StickEntity _stickEntity;
         private readonly ReactiveProperty<float> _stickLength = new();
-        private readonly ReactiveEvent<int> _addScore = new();
+        private readonly ReactiveProperty<bool> _columnIsReachable = new();
 
 
         public GameplayEntity(Ctx ctx)
@@ -72,9 +72,10 @@ namespace CodeBase.Game.Gameplay
                 uiRoot = _ctx.uiRoot,
                 startGame = _ctx.startGame,
                 startLevel = _ctx.startLevel,
-                addScore = _addScore,
                 finishLevel = _ctx.finishLevel,
-                showStartMenu = _ctx.showStartMenu
+                showStartMenu = _ctx.showStartMenu,
+                columnIsReachable = _columnIsReachable,
+                nextColumnXPosition = _ctx.nextColumnXPosition
             };
             _scoreCounterEntity = new ScoreCounterEntity(scoreCounterEntityCtx);
             AddUnsafe(_scoreCounterEntity);
@@ -91,7 +92,7 @@ namespace CodeBase.Game.Gameplay
                 levelFlowState = _ctx.levelFlowState,
                 stickLength = _stickLength,
                 finishLevel = _ctx.finishLevel,
-                addScore = _addScore,
+                columnIsReachable = _columnIsReachable
             };
             _playerEntity = new PlayerEntity(playerEntityCtx);
             AddUnsafe(_playerEntity);

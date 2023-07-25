@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using CodeBase.Data;
 using External.Framework;
 using External.Reactive;

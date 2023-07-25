@@ -42,7 +42,7 @@ namespace CodeBase.Game.Level
         private void NextColumn()
         {
             _ctx.actualColumnXPosition.Value = _ctx.nextColumnXPosition.Value;
-            _ctx.nextColumnXPosition.Value = _ctx.actualColumnXPosition.Value + 6 + UnityEngine.Random.Range(0, 4);
+            _ctx.nextColumnXPosition.Value = _ctx.actualColumnXPosition.Value + 5 + UnityEngine.Random.Range(0, 4);
             AddColumn(_ctx.nextColumnXPosition.Value);
         }
         

@@ -17,7 +17,7 @@ namespace CodeBase.Game.Gameplay.Player
             public ReactiveProperty<LevelFlowState> levelFlowState;
             public ReactiveProperty<float> stickLength;
             public ReactiveTrigger finishLevel;
-            public ReactiveEvent<int> addScore;
+            public ReactiveProperty<bool> columnIsReachable;
         }
         private readonly Ctx _ctx;
         private PlayerPm _pm;
@@ -25,7 +25,6 @@ namespace CodeBase.Game.Gameplay.Player
         private readonly ReactiveEvent<float> _movePlayerTo = new();
         private readonly ReactiveTrigger _playerFinishMoving = new ();
         
-
         public PlayerEntity (Ctx ctx)
         {
             _ctx = ctx;
@@ -37,7 +36,6 @@ namespace CodeBase.Game.Gameplay.Player
         {
             var playerPmCtx = new PlayerPm.Ctx()
             {
-                contentProvider = _ctx.contentProvider,
                 nextColumnXPosition = _ctx.nextColumnXPosition,
                 movePlayerTo = _movePlayerTo,
                 levelFlowState = _ctx.levelFlowState,
@@ -45,7 +43,7 @@ namespace CodeBase.Game.Gameplay.Player
                 actualColumnXPosition = _ctx.actualColumnXPosition,
                 playerFinishMoving = _playerFinishMoving,
                 finishLevel = _ctx.finishLevel,
-                addScore = _ctx.addScore
+                columnIsReachable = _ctx.columnIsReachable,
             };
             _pm = new PlayerPm(playerPmCtx);
             AddUnsafe(_pm);

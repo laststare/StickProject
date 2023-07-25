@@ -10,7 +10,6 @@ namespace CodeBase.Game.Gameplay.Player
     {
         public struct Ctx
         {
-            public ContentProvider contentProvider; 
             public IReadOnlyReactiveProperty<float> actualColumnXPosition;
             public IReadOnlyReactiveProperty<float> nextColumnXPosition;
             public ReactiveEvent<float> movePlayerTo;
@@ -18,10 +17,9 @@ namespace CodeBase.Game.Gameplay.Player
             public IReadOnlyReactiveProperty<float> stickLength;
             public IReadOnlyReactiveTrigger playerFinishMoving;
             public ReactiveTrigger finishLevel;
-            public ReactiveEvent<int> addScore;
+            public ReactiveProperty<bool> columnIsReachable;
         }
         private readonly Ctx _ctx;
-        private bool _isStickLengthCorrect;
 
         public PlayerPm (Ctx ctx)
         {
@@ -37,9 +35,9 @@ namespace CodeBase.Game.Gameplay.Player
         private void SetPlayerDestinationPoint()
         {
             var moveDistance = _ctx.actualColumnXPosition.Value + 1 + _ctx.stickLength.Value;
-            _isStickLengthCorrect = moveDistance >= _ctx.nextColumnXPosition.Value - 1.25f &&
-                                    moveDistance <= _ctx.nextColumnXPosition.Value + 1.25f;
-            var playerDestination = _isStickLengthCorrect
+            _ctx.columnIsReachable.SetValueAndForceNotify(moveDistance >= _ctx.nextColumnXPosition.Value - 1.25f &&
+                                                          moveDistance <= _ctx.nextColumnXPosition.Value + 1.25f);
+            var playerDestination = _ctx.columnIsReachable.Value
                 ? _ctx.nextColumnXPosition.Value + Constant.PlayerOnColumnXOffset
                 : moveDistance;
             _ctx.movePlayerTo.Notify(playerDestination);
@@ -47,12 +45,9 @@ namespace CodeBase.Game.Gameplay.Player
 
         private void PlayerOnNextColumn()
         {
-            if (_isStickLengthCorrect)
-            {
-                _ctx.addScore.Notify(_ctx.contentProvider.Settings.RewardConfig.OneColumnReward);
+            if (_ctx.columnIsReachable.Value)
                 _ctx.levelFlowState.Value = LevelFlowState.CameraRun;
-            }
-            else 
+            else
                 _ctx.finishLevel.Notify();
         }
 

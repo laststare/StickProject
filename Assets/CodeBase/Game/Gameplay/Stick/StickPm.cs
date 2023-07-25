@@ -27,20 +27,19 @@ namespace CodeBase.Game.Gameplay.Stick
         private readonly Ctx _ctx;
       
         private CompositeDisposable _clickHandlers;
-
-
+        
         public StickPm(Ctx ctx)
         {
             _ctx = ctx;
             AddUnsafe(_ctx.levelFlowState.Subscribe(x =>
             {
-                if (x == LevelFlowState.PlayerIdle) MakeTemporarySubscription();
+                if (x == LevelFlowState.PlayerIdle) TmpClickDownSubscription();
             }));
             AddUnsafe(_ctx.startLevel.Subscribe(DestroySticks));
             AddUnsafe(_ctx.stickIsDown.Subscribe(() => _ctx.levelFlowState.Value = LevelFlowState.PlayerRun));
         }
 
-        private void MakeTemporarySubscription()
+        private void TmpClickDownSubscription()
         {
             _clickHandlers = new CompositeDisposable();
             Observable.EveryUpdate()
@@ -49,8 +48,12 @@ namespace CodeBase.Game.Gameplay.Stick
                     {
                         _ctx.createView.Notify();
                         GrowStickUp();
+                        TmpClickUpSubscription();
                     }).AddTo(_clickHandlers);
-            
+        }
+
+        private void TmpClickUpSubscription()
+        {
             Observable.EveryUpdate()
                 .Where(_ => Input.GetMouseButtonUp(0)).Subscribe(
                     (_) =>
@@ -60,7 +63,7 @@ namespace CodeBase.Game.Gameplay.Stick
                     })
                 .AddTo(_clickHandlers); 
         }
-        
+
         private void GrowStickUp()
         {
             _ctx.levelFlowState.Value = LevelFlowState.StickGrowsUp;
