@@ -10,10 +10,10 @@ namespace CodeBase.Game.Level
         public struct Ctx
         {
             public ContentProvider contentProvider;
-            public ReactiveTrigger startLevel;
+            public IReadOnlyReactiveTrigger startLevel;
             public ReactiveProperty<float> actualColumnXPosition;
             public ReactiveProperty<float> nextColumnXPosition;
-            public ReactiveProperty<LevelFlowState> levelFlowState;
+            public IReadOnlyReactiveProperty<LevelFlowState> levelFlowState;
             public IReadOnlyReactiveProperty<bool> columnIsReachable;
         }
 

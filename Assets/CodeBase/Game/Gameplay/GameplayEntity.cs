@@ -34,8 +34,7 @@ namespace CodeBase.Game.Gameplay
         private StickEntity _stickEntity;
         private readonly ReactiveProperty<float> _stickLength = new();
         
-
-
+        
         public GameplayEntity(Ctx ctx)
         {
             _ctx = ctx;

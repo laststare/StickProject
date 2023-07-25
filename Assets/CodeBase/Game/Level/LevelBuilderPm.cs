@@ -18,7 +18,7 @@ namespace CodeBase.Game.Level
             public IReadOnlyReactiveTrigger startLevel;
             public ReactiveProperty<float> actualColumnXPosition;
             public ReactiveProperty<float> nextColumnXPosition;
-            public ReactiveProperty<LevelFlowState> levelFlowState;
+            public IReadOnlyReactiveProperty<LevelFlowState> levelFlowState;
             public IReadOnlyReactiveProperty<bool> columnIsReachable;
         }
 
