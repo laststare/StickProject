@@ -1,4 +1,5 @@
 using CodeBase.Data;
+using CodeBase.Game.DataSave;
 using External.Framework;
 using External.Reactive;
 using UniRx;
@@ -17,6 +18,7 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
             public IReadOnlyReactiveProperty<bool> columnIsReachable;
             public ReactiveCollection<RewardView> spawnedRewardViews;
             public ReactiveTrigger spawnRewardView;
+            public IReadOnlyReactiveProperty<IDataSave> dataSave;
         }
         
         private readonly Ctx _ctx;
@@ -43,7 +45,7 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
 
         private void GetSavedScore()
         {
-            _bestScore = PlayerPrefs.GetInt(Constant.SavedScore);
+            _bestScore = _ctx.dataSave.Value.LoadBestScore();
             SendScoreToView();
         }
 
@@ -65,7 +67,7 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
             if (_currentScore <= _bestScore)
                 return;
             _bestScore = _currentScore;
-            PlayerPrefs.SetInt(Constant.SavedScore, _bestScore);
+            _ctx.dataSave.Value.SaveBestScore(_bestScore);
         }
 
         private void DestroyRewardView()

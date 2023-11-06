@@ -1,4 +1,5 @@
 using CodeBase.Data;
+using CodeBase.Game.DataSave;
 using External.Framework;
 using External.Reactive;
 using UniRx;
@@ -18,6 +19,7 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
             public IReadOnlyReactiveTrigger showStartMenu;
             public ReactiveProperty<bool> columnIsReachable;
             public ReactiveProperty<float> nextColumnXPosition;
+            public IReadOnlyReactiveProperty<IDataSave> dataSave;
         }
         private readonly Ctx _ctx;
         private ScoreCounterPm _pm;
@@ -45,6 +47,7 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
                 contentProvider = _ctx.contentProvider,
                 spawnRewardView = _spawnRewardView,
                 spawnedRewardViews = _spawnedRewardViews,
+                dataSave = _ctx.dataSave
             };
             _pm = new ScoreCounterPm(scoreCounterPmCtx);
             AddUnsafe(_pm);

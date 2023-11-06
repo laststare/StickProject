@@ -1,4 +1,5 @@
 ﻿using CodeBase.Data;
+using CodeBase.Game.DataSave;
 using CodeBase.Game.Gameplay;
 using CodeBase.Game.Level;
 using CodeBase.Game.MainMenu;
@@ -20,6 +21,7 @@ namespace CodeBase.Game
         private LevelBuilderEntity _levelBuilderEntity;
         private GameplayEntity _gameplayEntity;
         private MainMenuEntity _mainMenuEntity;
+        private DataSaveEntity _dataSaveEntity;
 
         private readonly ReactiveTrigger _startGame = new();
         private readonly ReactiveTrigger _startLevel = new();
@@ -29,13 +31,25 @@ namespace CodeBase.Game
         private readonly ReactiveProperty<float> _nextColumnXPosition = new();
         private readonly ReactiveTrigger _showStartMenu = new();
         private readonly ReactiveProperty<bool> _columnIsReachable = new();
-        
+        private readonly ReactiveProperty<IDataSave> _dataSave = new();
+
         public GameEntity(Ctx ctx)
         {
             _ctx = ctx;
+            CreateDataSave();
             CreateLevelBuilder();
             CreateGameplayEntity();
             CreateMainMenu();
+        }
+        
+        private void CreateDataSave()
+        {
+            var dataSAveEntityCtx = new DataSaveEntity.Ctx()
+            {
+                dataSave = _dataSave
+            };
+            _dataSaveEntity = new DataSaveEntity(dataSAveEntityCtx);
+            AddUnsafe(_dataSaveEntity);
         }
 
         private void CreateLevelBuilder()
@@ -67,6 +81,7 @@ namespace CodeBase.Game
                 nextColumnXPosition = _nextColumnXPosition,
                 showStartMenu = _showStartMenu,
                 columnIsReachable = _columnIsReachable,
+                dataSave = _dataSave
             };
             _gameplayEntity = new GameplayEntity(gameplayEntityCtx);
             AddUnsafe(_gameplayEntity);
@@ -86,5 +101,6 @@ namespace CodeBase.Game
             _mainMenuEntity = new MainMenuEntity(mainMenuEntityCtx);
             AddUnsafe(_mainMenuEntity);
         }
+        
     }
 }

@@ -1,4 +1,5 @@
 using CodeBase.Data;
+using CodeBase.Game.DataSave;
 using CodeBase.Game.Gameplay.Camera;
 using CodeBase.Game.Gameplay.Player;
 using CodeBase.Game.Gameplay.ScoreCounter;
@@ -25,6 +26,7 @@ namespace CodeBase.Game.Gameplay
             public ReactiveProperty<float> nextColumnXPosition;
             public IReadOnlyReactiveTrigger showStartMenu;
             public ReactiveProperty<bool> columnIsReachable;
+            public IReadOnlyReactiveProperty<IDataSave> dataSave;
         }
 
         private readonly Ctx _ctx;
@@ -88,7 +90,8 @@ namespace CodeBase.Game.Gameplay
                 finishLevel = _ctx.finishLevel,
                 showStartMenu = _ctx.showStartMenu,
                 columnIsReachable = _ctx.columnIsReachable,
-                nextColumnXPosition = _ctx.nextColumnXPosition
+                nextColumnXPosition = _ctx.nextColumnXPosition,
+                dataSave = _ctx.dataSave
             };
             _scoreCounterEntity = new ScoreCounterEntity(scoreCounterEntityCtx);
             AddUnsafe(_scoreCounterEntity);
