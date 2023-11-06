@@ -14,7 +14,6 @@ namespace CodeBase
             {
                 contentProvider = contentProvider,
                 uiRoot = uiRoot,
-              
             };
             _root = Root.CreateRoot(rootCtx);
         }

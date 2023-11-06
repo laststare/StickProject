@@ -10,7 +10,7 @@ namespace CodeBase
     {
         public struct Ctx
         {
-            public ContentProvider contentProvider;
+            public IContentProvider contentProvider;
             public RectTransform uiRoot;
         }
         
