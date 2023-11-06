@@ -10,7 +10,7 @@ namespace CodeBase.Game.MainMenu
     {
         public struct Ctx
         {
-             public ContentProvider contentProvider; 
+             public IContentProvider contentProvider; 
              public RectTransform uiRoot;
              public ReactiveTrigger startLevel;
              public IReadOnlyReactiveTrigger startGame;
@@ -44,7 +44,7 @@ namespace CodeBase.Game.MainMenu
 
         private void CrateView()
         {
-            _view = Object.Instantiate(_ctx.contentProvider.UIViews.MainMenuView, _ctx.uiRoot);
+            _view = Object.Instantiate(_ctx.contentProvider.MainMenuView(), _ctx.uiRoot);
             _view.Init(new MainMenuView.Ctx()
             {
                 menuButtonClicked = _menuButtonClicked,

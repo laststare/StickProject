@@ -10,7 +10,7 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
     {
         public struct Ctx
         {
-            public ContentProvider contentProvider;
+            public IContentProvider contentProvider;
             public RectTransform uiRoot;
             public IReadOnlyReactiveTrigger startGame;
             public IReadOnlyReactiveTrigger startLevel;
@@ -52,7 +52,7 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
 
         private void CreateView()
         {
-            _view = Object.Instantiate(_ctx.contentProvider.UIViews.ScoreCounterView, _ctx.uiRoot);
+            _view = Object.Instantiate(_ctx.contentProvider.ScoreCounterView(), _ctx.uiRoot);
             _view.Init(new ScoreCounterView.Ctx()
             {
                 showScore = _showScore,
@@ -65,7 +65,7 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
 
         private void CreateRewardView()
         {
-            var rewardView = Object.Instantiate(_ctx.contentProvider.Views.RewardView,
+            var rewardView = Object.Instantiate(_ctx.contentProvider.RewardView(),
                 new Vector3(_ctx.nextColumnXPosition.Value, Constant.PlayerYPosition, 0), Quaternion.identity);
             _spawnedRewardViews.Add(rewardView);
         }

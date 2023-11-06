@@ -10,7 +10,7 @@ namespace CodeBase.Game.Gameplay.Stick
     {
         public struct Ctx
         {
-            public ContentProvider contentProvider; 
+            public IContentProvider contentProvider; 
             public IReadOnlyReactiveProperty<float> actualColumnXPosition;
             public IReadOnlyReactiveProperty<LevelFlowState> levelFlowState;
             public ReactiveProperty<float> stickLength;
@@ -54,7 +54,7 @@ namespace CodeBase.Game.Gameplay.Stick
 
         private void CreateStickView()
         {
-            var stick = Object.Instantiate(_ctx.contentProvider.Views.StickView,
+            var stick = Object.Instantiate(_ctx.contentProvider.StickView(),
                 new Vector2(_ctx.actualColumnXPosition.Value + 1, Constant.PlayerYPosition - 0.5f),
                 Quaternion.identity);
             stick.Init(new StickView.Ctx()

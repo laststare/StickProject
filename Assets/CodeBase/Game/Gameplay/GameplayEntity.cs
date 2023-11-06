@@ -15,7 +15,7 @@ namespace CodeBase.Game.Gameplay
     {
         public struct Ctx
         {
-            public ContentProvider contentProvider;
+            public IContentProvider contentProvider;
             public RectTransform uiRoot;
             public ReactiveTrigger startLevel;
             public ReactiveTrigger finishLevel;

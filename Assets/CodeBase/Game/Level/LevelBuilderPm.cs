@@ -14,7 +14,7 @@ namespace CodeBase.Game.Level
     {
         public struct Ctx 
         {
-            public ContentProvider contentProvider;
+            public IContentProvider contentProvider;
             public IReadOnlyReactiveTrigger startLevel;
             public ReactiveProperty<float> actualColumnXPosition;
             public ReactiveProperty<float> nextColumnXPosition;
@@ -55,7 +55,7 @@ namespace CodeBase.Game.Level
         
         private void AddColumn(float xPosition)
         {
-            var column = UnityEngine.Object.Instantiate(_ctx.contentProvider.Views.Levelcolumn,
+            var column = UnityEngine.Object.Instantiate(_ctx.contentProvider.LevelColumn(),
                 new Vector3(xPosition, 0, 0),
                 Quaternion.identity);
             _levelColumns.Add(column); 

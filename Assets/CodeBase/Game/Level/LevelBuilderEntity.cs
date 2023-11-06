@@ -9,7 +9,7 @@ namespace CodeBase.Game.Level
     {
         public struct Ctx
         {
-            public ContentProvider contentProvider;
+            public IContentProvider contentProvider;
             public IReadOnlyReactiveTrigger startLevel;
             public ReactiveProperty<float> actualColumnXPosition;
             public ReactiveProperty<float> nextColumnXPosition;

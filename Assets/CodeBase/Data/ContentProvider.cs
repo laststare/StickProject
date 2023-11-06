@@ -9,7 +9,7 @@ using UnityEngine;
 namespace CodeBase.Data
 {
     [CreateAssetMenu(fileName = "ContentProvider", menuName = "GameData/ContentProvider")]
-    public class ContentProvider : ScriptableObject
+    public class ContentProvider : ScriptableObject, IContentProvider
     {
         public UIViewsContent UIViews => uiViews;
         public ViewsContent Views => views;
@@ -24,33 +24,33 @@ namespace CodeBase.Data
         [Serializable]
         public class UIViewsContent
         {
-            [SerializeField] private MainMenuView mainMenuView;
-            [SerializeField] private ScoreCounterView scoreCounterView;
-            public MainMenuView MainMenuView => mainMenuView;
-            public ScoreCounterView ScoreCounterView => scoreCounterView;
-            
+            public MainMenuView mainMenuView;
+            public ScoreCounterView scoreCounterView;
         }
-
+        
         [Serializable]
         public class ViewsContent
         { 
-            [SerializeField] private GameObject levelcolumn;
-            [SerializeField] private CameraView cameraView;
-            [SerializeField] private PlayerView playerView;
-            [SerializeField] private StickView stickView;
-            [SerializeField] private RewardView rewardView;
-            public GameObject Levelcolumn => levelcolumn;
-            public CameraView CameraView => cameraView;
-            public PlayerView PlayerView => playerView;
-            public StickView StickView => stickView;
-            public RewardView RewardView => rewardView;
+            public GameObject levelcolumn;
+            public CameraView cameraView;
+            public PlayerView playerView;
+            public StickView stickView;
+            public RewardView rewardView;
         }
-
+        
         [Serializable]
         public class SettingsContent
         {
-            [SerializeField] private RewardConfig rewardConfig;
-            public RewardConfig RewardConfig => rewardConfig;
+            public RewardConfig rewardConfig;
         }
+        
+        public MainMenuView MainMenuView() => UIViews.mainMenuView;
+        public ScoreCounterView ScoreCounterView() => UIViews.scoreCounterView;
+        public GameObject LevelColumn()  => Views.levelcolumn;
+        public CameraView CameraView()  => Views.cameraView;
+        public PlayerView PlayerView()  => Views.playerView;
+        public StickView StickView()  => Views.stickView;
+        public RewardView RewardView()  => Views.rewardView;
+        public RewardConfig RewardConfig()  => Settings.rewardConfig;
     }
 }

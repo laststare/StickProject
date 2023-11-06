@@ -10,7 +10,7 @@ namespace CodeBase.Game.Gameplay.Player
     {
         public struct Ctx
         {
-            public ContentProvider contentProvider; 
+            public IContentProvider contentProvider; 
             public IReadOnlyReactiveTrigger startLevel;
             public IReadOnlyReactiveProperty<float> actualColumnXPosition;
             public IReadOnlyReactiveProperty<float> nextColumnXPosition;
@@ -53,7 +53,7 @@ namespace CodeBase.Game.Gameplay.Player
 
         private void CreateView()
         {
-            _view = Object.Instantiate(_ctx.contentProvider.Views.PlayerView);
+            _view = Object.Instantiate(_ctx.contentProvider.PlayerView());
             _view.Init(new PlayerView.Ctx()
             {
                 startLevel = _ctx.startLevel,

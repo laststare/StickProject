@@ -13,7 +13,7 @@ namespace CodeBase.Game
     {
         public struct Ctx
         {
-            public ContentProvider contentProvider;
+            public IContentProvider contentProvider;
             public RectTransform uiRoot;
         }
         private readonly Ctx _ctx;

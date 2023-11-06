@@ -10,7 +10,7 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
     {
         public struct Ctx
         {
-            public ContentProvider contentProvider;
+            public IContentProvider contentProvider;
             public ReactiveEvent<string, string> showScore;
             public IReadOnlyReactiveTrigger startGame;
             public IReadOnlyReactiveTrigger finishLevel;
@@ -56,7 +56,7 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
 
         private void UpdateScore()
         {
-            _currentScore += _ctx.contentProvider.Settings.RewardConfig.OneColumnReward;
+            _currentScore += _ctx.contentProvider.RewardConfig().OneColumnReward;
             _ctx.spawnRewardView.Notify();
         }
 

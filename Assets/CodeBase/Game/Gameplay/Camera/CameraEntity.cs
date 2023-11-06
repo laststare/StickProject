@@ -10,7 +10,7 @@ namespace CodeBase.Game.Gameplay.Camera
     {
         public struct Ctx
         {
-            public ContentProvider contentProvider;
+            public IContentProvider contentProvider;
             public IReadOnlyReactiveProperty<LevelFlowState> levelFlowState;
             public IReadOnlyReactiveTrigger startLevel;
             public IReadOnlyReactiveProperty<float> actualColumnXPosition;
@@ -46,7 +46,7 @@ namespace CodeBase.Game.Gameplay.Camera
 
         private void CreateCameraView()
         {
-            _view = Object.Instantiate(_ctx.contentProvider.Views.CameraView);
+            _view = Object.Instantiate(_ctx.contentProvider.CameraView());
             _view.Init(new CameraView.Ctx()
             {
                 moveCameraToNextColumn = _moveCameraToNextColumn,
