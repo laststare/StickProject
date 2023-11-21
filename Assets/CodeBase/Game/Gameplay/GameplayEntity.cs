@@ -48,10 +48,6 @@ namespace CodeBase.Game.Gameplay
             CreateStickEntity();
         }
         
-        /// <summary>
-        /// ниже, для всех классов переменная levelFlowState в состоянии readonly
-        /// переключание игровых состяний происходит вызовом changeLevelFlowState
-        /// </summary>
         private void CreateGameFlowPm()
         {
             var gameFlowPmCtx = new GameFlowPm.Ctx()

@@ -31,10 +31,10 @@ namespace CodeBase.Data
         [Serializable]
         public class ViewsContent
         { 
-            public GameObject levelcolumn;
+            public GameObject levelColumn;
             public CameraView cameraView;
             public PlayerView playerView;
-            public StickView stickView;
+            public Transform stick;
             public RewardView rewardView;
         }
         
@@ -46,10 +46,10 @@ namespace CodeBase.Data
         
         public MainMenuView MainMenuView() => UIViews.mainMenuView;
         public ScoreCounterView ScoreCounterView() => UIViews.scoreCounterView;
-        public GameObject LevelColumn()  => Views.levelcolumn;
+        public GameObject LevelColumn()  => Views.levelColumn;
         public CameraView CameraView()  => Views.cameraView;
         public PlayerView PlayerView()  => Views.playerView;
-        public StickView StickView()  => Views.stickView;
+        public Transform Stick()  => Views.stick;
         public RewardView RewardView()  => Views.rewardView;
         public RewardConfig RewardConfig()  => Settings.rewardConfig;
     }

@@ -15,20 +15,20 @@ namespace CodeBase.Game.Gameplay.Stick
     {
         public struct Ctx
         {
+            public IContentProvider contentProvider; 
             public IReadOnlyReactiveProperty<LevelFlowState> levelFlowState;
-            public ReactiveTrigger createView;
-            public ReactiveTrigger stickIsDown;
-            public ReactiveTrigger startStickGrow ;
-            public ReactiveTrigger startStickRotation;
-            public ReactiveCollection<GameObject> spawnedSticks;
+            public IReadOnlyReactiveProperty<float> actualColumnXPosition;
             public IReadOnlyReactiveTrigger startLevel;
             public IReadOnlyReactiveProperty<bool> columnIsReachable;
             public ReactiveEvent<LevelFlowState> changeLevelFlowState;
+            public ReactiveProperty<float> stickLength;
         }
 
         private readonly Ctx _ctx;
       
         private CompositeDisposable _clickHandlers;
+        private readonly List<GameObject> _spawnedSticks = new List<GameObject>();
+
         
         public StickPm(Ctx ctx)
         {
@@ -38,13 +38,20 @@ namespace CodeBase.Game.Gameplay.Stick
                 if (x == LevelFlowState.PlayerIdle) TmpClickDownSubscription();
             }));
             AddUnsafe(_ctx.startLevel.Subscribe(DestroySticks));
-            AddUnsafe(_ctx.stickIsDown.Subscribe(() => 
-                _ctx.changeLevelFlowState.Notify(LevelFlowState.PlayerRun)));
+
             AddUnsafe(_ctx.columnIsReachable.Subscribe(x =>
             {
                 if(x) 
                     RemoveOneView();
             }));
+        }
+        
+        private void CreateView()
+        {
+            var stick = Object.Instantiate(_ctx.contentProvider.Stick(),
+                new Vector2(_ctx.actualColumnXPosition.Value + 1, Constant.PlayerYPosition - 0.5f),
+                Quaternion.identity);
+            _spawnedSticks.Add(stick.gameObject);
         }
 
         private void TmpClickDownSubscription()
@@ -54,7 +61,7 @@ namespace CodeBase.Game.Gameplay.Stick
                 .Where(_ => Input.GetMouseButtonDown(0)).Subscribe(
                     (_) =>
                     {
-                        _ctx.createView.Notify();
+                        CreateView();
                         GrowStickUp();
                         TmpClickUpSubscription();
                     }).AddTo(_clickHandlers);
@@ -72,29 +79,40 @@ namespace CodeBase.Game.Gameplay.Stick
                 .AddTo(_clickHandlers); 
         }
 
-        private void GrowStickUp()
+        private async void GrowStickUp()
         {
             _ctx.changeLevelFlowState.Notify(LevelFlowState.StickGrowsUp);
-            _ctx.startStickGrow.Notify();
+            var stick = _spawnedSticks[^1];
+            var stickHeight = 0f;
+            var stickWidth = stick.transform.localScale.x;
+            while (_ctx.levelFlowState.Value == LevelFlowState.StickGrowsUp)
+            {
+                stickHeight += Time.deltaTime * 6;
+                stick.transform.localScale = new Vector3(stickWidth, stickHeight, 1);
+                await UniTask.Yield();
+            }
+            _ctx.stickLength.Value = stickHeight;
         }
         
         private void RotateStick()
         {
             _ctx.changeLevelFlowState.Notify(LevelFlowState.StickFalls);
-            _ctx.startStickRotation.Notify();
+            var stick = _spawnedSticks[^1];
+            stick.transform.DORotate(new Vector3(0, 0, -90f), 0.5f)
+                .OnComplete(() => _ctx.changeLevelFlowState.Notify(LevelFlowState.PlayerRun));
         }
         
         private void DestroySticks()
         {
-            foreach (var stick in _ctx.spawnedSticks) 
+            foreach (var stick in _spawnedSticks) 
                 Object.Destroy(stick);
-            _ctx.spawnedSticks.Clear();
+            _spawnedSticks.Clear();
         }
         private void RemoveOneView()
         {
-            if (_ctx.spawnedSticks.Count <= 2) return;
-            Object.Destroy(_ctx.spawnedSticks[0].gameObject);
-            _ctx.spawnedSticks.RemoveAt(0);
+            if (_spawnedSticks.Count <= 2) return;
+            Object.Destroy(_spawnedSticks[0].gameObject);
+            _spawnedSticks.RemoveAt(0);
         }
 
     }
