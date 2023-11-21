@@ -41,7 +41,7 @@ namespace CodeBase.Game.Gameplay.Stick
                 actualColumnXPosition = _ctx.actualColumnXPosition
             };
             _pm = new StickPm(stickPmCtx);
-            AddUnsafe(_pm);
+            AddToDisposables(_pm);
         }
         
         

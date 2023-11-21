@@ -30,10 +30,11 @@ namespace CodeBase.Game.Level
                 actualColumnXPosition = _ctx.actualColumnXPosition,
                 nextColumnXPosition = _ctx.nextColumnXPosition,
                 levelFlowState = _ctx.levelFlowState,
-                columnIsReachable = _ctx.columnIsReachable
+                columnIsReachable = _ctx.columnIsReachable,
+                minColumnDistance = _ctx.contentProvider.LevelConfig().GetMinColumnDistance
             };
             _pm = new LevelBuilderPm(levelBuilderPmCtx);
-            AddUnsafe(_pm);
+            AddToDisposables(_pm);
         }
     }
 }

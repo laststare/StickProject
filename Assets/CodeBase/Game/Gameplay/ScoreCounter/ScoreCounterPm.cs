@@ -27,15 +27,15 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
         public ScoreCounterPm(Ctx ctx)
         {
             _ctx = ctx;
-            AddUnsafe(_ctx.startGame.Subscribe(GetSavedScore));
-            AddUnsafe(_ctx.finishLevel.Subscribe(() =>
+            AddToDisposables(_ctx.startGame.Subscribe(GetSavedScore));
+            AddToDisposables(_ctx.finishLevel.Subscribe(() =>
             {
                 UpdateBestScore();
                 SendScoreToView();
                 ClearScore();
                 DestroyRewardView();
             }));
-            AddUnsafe(_ctx.columnIsReachable.Subscribe(x =>
+            AddToDisposables(_ctx.columnIsReachable.Subscribe(x =>
             {
                 if (!x) return;
                 UpdateScore();

@@ -38,10 +38,11 @@ namespace CodeBase.Game.Gameplay.Camera
                 actualColumnXPosition = _ctx.actualColumnXPosition,
                 levelFlowState = _ctx.levelFlowState,
                 cameraFinishMoving = _cameraFinishMoving,
-                changeLevelFlowState = _ctx.changeLevelFlowState
+                changeLevelFlowState = _ctx.changeLevelFlowState,
+                cameraColumnXOffset = _ctx.contentProvider.LevelConfig().GetCameraColumnXOffset
             };
             _pm = new CameraPm(cameraPmCtx);
-            AddUnsafe(_pm);
+            AddToDisposables(_pm);
         }
 
         private void CreateCameraView()
@@ -52,6 +53,7 @@ namespace CodeBase.Game.Gameplay.Camera
                 moveCameraToNextColumn = _moveCameraToNextColumn,
                 cameraFinishMoving = _cameraFinishMoving,
                 startLevel = _ctx.startLevel,
+                cameraColumnXOffset = _ctx.contentProvider.LevelConfig().GetCameraColumnXOffset
             });
         }
         

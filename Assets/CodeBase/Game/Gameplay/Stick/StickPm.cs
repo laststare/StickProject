@@ -33,13 +33,13 @@ namespace CodeBase.Game.Gameplay.Stick
         public StickPm(Ctx ctx)
         {
             _ctx = ctx;
-            AddUnsafe(_ctx.levelFlowState.Subscribe(x =>
+            AddToDisposables(_ctx.levelFlowState.Subscribe(x =>
             {
                 if (x == LevelFlowState.PlayerIdle) TmpClickDownSubscription();
             }));
-            AddUnsafe(_ctx.startLevel.Subscribe(DestroySticks));
+            AddToDisposables(_ctx.startLevel.Subscribe(DestroySticks));
 
-            AddUnsafe(_ctx.columnIsReachable.Subscribe(x =>
+            AddToDisposables(_ctx.columnIsReachable.Subscribe(x =>
             {
                 if(x) 
                     RemoveOneView();
@@ -49,7 +49,7 @@ namespace CodeBase.Game.Gameplay.Stick
         private void CreateView()
         {
             var stick = Object.Instantiate(_ctx.contentProvider.Stick(),
-                new Vector2(_ctx.actualColumnXPosition.Value + 1, Constant.PlayerYPosition - 0.5f),
+                new Vector2(_ctx.actualColumnXPosition.Value + 1, _ctx.contentProvider.LevelConfig().GetPlayerYPosition - 0.5f),
                 Quaternion.identity);
             _spawnedSticks.Add(stick.gameObject);
         }

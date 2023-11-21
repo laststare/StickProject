@@ -25,7 +25,7 @@ namespace CodeBase.Game.DataSave
                 dataSave = _ctx.dataSave
             };
             _pm = new DataSavePm(dataSavePmCtx);
-            AddUnsafe(_pm);
+            AddToDisposables(_pm);
         }
     }
 }

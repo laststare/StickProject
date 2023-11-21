@@ -19,27 +19,33 @@ namespace CodeBase.Game.Gameplay.Player
             public ReactiveTrigger finishLevel;
             public ReactiveProperty<bool> columnIsReachable;
             public ReactiveEvent<LevelFlowState> changeLevelFlowState;
+            public int columnOffset;
+            public float playerOnColumnXOffset;
         }
         private readonly Ctx _ctx;
+        private readonly int _columnOffset;
+        private readonly float _playerOnColumnXOffset;
 
         public PlayerPm (Ctx ctx)
         {
             _ctx = ctx;
-            AddUnsafe(_ctx.levelFlowState.Subscribe(x =>
+            _columnOffset = _ctx.columnOffset;
+            _playerOnColumnXOffset = _ctx.playerOnColumnXOffset;
+            AddToDisposables(_ctx.levelFlowState.Subscribe(x =>
             {
                 if (x == LevelFlowState.PlayerRun)
                     SetPlayerDestinationPoint();
             }));
-            AddUnsafe(_ctx.playerFinishMoving.Subscribe(PlayerOnNextColumn));
+            AddToDisposables(_ctx.playerFinishMoving.Subscribe(PlayerOnNextColumn));
         }
 
         private void SetPlayerDestinationPoint()
         {
             var moveDistance = _ctx.actualColumnXPosition.Value + 1 + _ctx.stickLength.Value;
-            _ctx.columnIsReachable.SetValueAndForceNotify(moveDistance >= _ctx.nextColumnXPosition.Value - 1.25f &&
-                                                          moveDistance <= _ctx.nextColumnXPosition.Value + 1.25f);
+            _ctx.columnIsReachable.SetValueAndForceNotify(moveDistance >= _ctx.nextColumnXPosition.Value - _columnOffset &&
+                                                          moveDistance <= _ctx.nextColumnXPosition.Value + _columnOffset);
             var playerDestination = _ctx.columnIsReachable.Value
-                ? _ctx.nextColumnXPosition.Value + Constant.PlayerOnColumnXOffset
+                ? _ctx.nextColumnXPosition.Value + _playerOnColumnXOffset
                 : moveDistance;
             _ctx.movePlayerTo.Notify(playerDestination);
         }

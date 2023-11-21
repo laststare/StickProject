@@ -23,3 +23,4 @@ MonoBehaviour:
     scoreCounterView: {fileID: 7807588281789143394, guid: 91a8b2cde3f9b4421a6f95a10334ab60, type: 3}
   settings:
     rewardConfig: {fileID: 11400000, guid: 49f9c33383ea64f98bb37405013434f4, type: 2}
+    levelConfig: {fileID: 11400000, guid: 2cbca8e6d43e07e43a5019394fe7a340, type: 2}

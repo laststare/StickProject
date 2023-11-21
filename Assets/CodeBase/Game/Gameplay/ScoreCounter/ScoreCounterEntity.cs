@@ -20,6 +20,7 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
             public ReactiveProperty<bool> columnIsReachable;
             public ReactiveProperty<float> nextColumnXPosition;
             public IReadOnlyReactiveProperty<IDataSave> dataSave;
+            public float playerYPosition;
         }
         private readonly Ctx _ctx;
         private ScoreCounterPm _pm;
@@ -27,13 +28,15 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
         private readonly ReactiveEvent<string, string> _showScore = new();
         private readonly ReactiveCollection<RewardView> _spawnedRewardViews = new();
         private readonly ReactiveTrigger _spawnRewardView = new();
+        private readonly float _playerYPosition;
 
         public ScoreCounterEntity(Ctx ctx)
         {
             _ctx = ctx;
+            _playerYPosition = _ctx.playerYPosition;
             CreatePm();
             CreateView();
-            AddUnsafe(_spawnRewardView.Subscribe(CreateRewardView));
+            AddToDisposables(_spawnRewardView.Subscribe(CreateRewardView));
         }
 
         private void CreatePm()
@@ -50,7 +53,7 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
                 dataSave = _ctx.dataSave
             };
             _pm = new ScoreCounterPm(scoreCounterPmCtx);
-            AddUnsafe(_pm);
+            AddToDisposables(_pm);
         }
 
         private void CreateView()
@@ -69,7 +72,7 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
         private void CreateRewardView()
         {
             var rewardView = Object.Instantiate(_ctx.contentProvider.RewardView(),
-                new Vector3(_ctx.nextColumnXPosition.Value, Constant.PlayerYPosition, 0), Quaternion.identity);
+                new Vector3(_ctx.nextColumnXPosition.Value, _playerYPosition, 0), Quaternion.identity);
             _spawnedRewardViews.Add(rewardView);
         }
 

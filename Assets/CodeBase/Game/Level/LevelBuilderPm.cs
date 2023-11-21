@@ -20,20 +20,23 @@ namespace CodeBase.Game.Level
             public ReactiveProperty<float> nextColumnXPosition;
             public IReadOnlyReactiveProperty<LevelFlowState> levelFlowState;
             public IReadOnlyReactiveProperty<bool> columnIsReachable;
+            public int minColumnDistance;
         }
 
         private readonly Ctx _ctx;
         private readonly List<GameObject> _levelColumns = new List<GameObject>();
+        private readonly int _minColumnDistance;
 
         public LevelBuilderPm(Ctx ctx)
         {
             _ctx = ctx;
-            AddUnsafe(_ctx.startLevel.Subscribe(CreateFirstColumns));
-            AddUnsafe(_ctx.levelFlowState.Subscribe(x =>
+            _minColumnDistance = _ctx.minColumnDistance;
+            AddToDisposables(_ctx.startLevel.Subscribe(CreateFirstColumns));
+            AddToDisposables(_ctx.levelFlowState.Subscribe(x =>
             {
                 if (x == LevelFlowState.CameraRun) NextColumn();
             }));
-            AddUnsafe(_ctx.columnIsReachable.Subscribe(x =>
+            AddToDisposables(_ctx.columnIsReachable.Subscribe(x =>
             {
                 if (x)
                     RemoveOneColumn();
@@ -49,13 +52,13 @@ namespace CodeBase.Game.Level
         private void NextColumn()
         {
             _ctx.actualColumnXPosition.Value = _ctx.nextColumnXPosition.Value;
-            _ctx.nextColumnXPosition.Value = _ctx.actualColumnXPosition.Value + 5 + UnityEngine.Random.Range(0, 4);
+            _ctx.nextColumnXPosition.Value = _ctx.actualColumnXPosition.Value + _minColumnDistance + UnityEngine.Random.Range(0, 4);
             AddColumn(_ctx.nextColumnXPosition.Value);
         }
         
         private void AddColumn(float xPosition)
         {
-            var column = UnityEngine.Object.Instantiate(_ctx.contentProvider.LevelColumn(),
+            var column = Object.Instantiate(_ctx.contentProvider.LevelColumn(),
                 new Vector3(xPosition, 0, 0),
                 Quaternion.identity);
             _levelColumns.Add(column); 

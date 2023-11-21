@@ -21,8 +21,8 @@ namespace CodeBase.Game.Gameplay
         public GameFlowPm(Ctx ctx)
         {
             _ctx = ctx;
-            AddUnsafe(_ctx.startLevel.Subscribe(() =>_ctx.levelFlowState.Value = LevelFlowState.PlayerIdle));
-            AddUnsafe(_ctx.changeLevelFlowState.SubscribeWithSkip(x => _ctx.levelFlowState.Value = x));
+            AddToDisposables(_ctx.startLevel.Subscribe(() =>_ctx.levelFlowState.Value = LevelFlowState.PlayerIdle));
+            AddToDisposables(_ctx.changeLevelFlowState.SubscribeWithSkip(x => _ctx.levelFlowState.Value = x));
             StartGame();
         }
         

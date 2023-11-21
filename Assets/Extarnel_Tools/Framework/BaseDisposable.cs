@@ -65,7 +65,7 @@ namespace External.Framework
         {
         }
 
-        protected TDisposable AddUnsafe<TDisposable>(TDisposable disposable) where TDisposable : IDisposable
+        protected TDisposable AddToDisposables<TDisposable>(TDisposable disposable) where TDisposable : IDisposable
         {
             if (_isDisposed)
             {

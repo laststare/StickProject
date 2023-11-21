@@ -28,7 +28,7 @@ namespace CodeBase
             };
 
             _gameEntity = new GameEntity(gameEntityCtx);
-            AddUnsafe(_gameEntity);
+            AddToDisposables(_gameEntity);
         }
     }
 }

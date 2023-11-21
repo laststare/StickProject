@@ -49,7 +49,7 @@ namespace CodeBase.Game
                 dataSave = _dataSave
             };
             _dataSaveEntity = new DataSaveEntity(dataSAveEntityCtx);
-            AddUnsafe(_dataSaveEntity);
+            AddToDisposables(_dataSaveEntity);
         }
 
         private void CreateLevelBuilder()
@@ -64,7 +64,7 @@ namespace CodeBase.Game
                 columnIsReachable = _columnIsReachable
             };
             _levelBuilderEntity = new LevelBuilderEntity(levelBuilderEntityCtx);
-            AddUnsafe(_levelBuilderEntity);
+            AddToDisposables(_levelBuilderEntity);
         }
 
         private void CreateGameplayEntity()
@@ -84,7 +84,7 @@ namespace CodeBase.Game
                 dataSave = _dataSave
             };
             _gameplayEntity = new GameplayEntity(gameplayEntityCtx);
-            AddUnsafe(_gameplayEntity);
+            AddToDisposables(_gameplayEntity);
         }
 
         private void CreateMainMenu()
@@ -99,7 +99,7 @@ namespace CodeBase.Game
                 showStartMenu = _showStartMenu,
             };
             _mainMenuEntity = new MainMenuEntity(mainMenuEntityCtx);
-            AddUnsafe(_mainMenuEntity);
+            AddToDisposables(_mainMenuEntity);
         }
         
     }

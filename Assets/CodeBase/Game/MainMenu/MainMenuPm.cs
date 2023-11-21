@@ -21,7 +21,7 @@ namespace CodeBase.Game.MainMenu
         public MainMenuPm(Ctx ctx)
         {
             _ctx = ctx;
-            AddUnsafe(_ctx.menuButtonClicked.SubscribeWithSkip(ButtonClickReceiver));
+            AddToDisposables(_ctx.menuButtonClicked.SubscribeWithSkip(ButtonClickReceiver));
         }
 
         private void ButtonClickReceiver(MainMenuButton button)

@@ -45,10 +45,12 @@ namespace CodeBase.Game.Gameplay.Player
                 playerFinishMoving = _playerFinishMoving,
                 finishLevel = _ctx.finishLevel,
                 columnIsReachable = _ctx.columnIsReachable,
-                changeLevelFlowState = _ctx.changeLevelFlowState
+                changeLevelFlowState = _ctx.changeLevelFlowState,
+                columnOffset = _ctx.contentProvider.LevelConfig().GetColumnOffset,
+                playerOnColumnXOffset = _ctx.contentProvider.LevelConfig().GetPlayerOnColumnXOffset
             };
             _pm = new PlayerPm(playerPmCtx);
-            AddUnsafe(_pm);
+            AddToDisposables(_pm);
         }
 
         private void CreateView()
@@ -57,9 +59,10 @@ namespace CodeBase.Game.Gameplay.Player
             _view.Init(new PlayerView.Ctx()
             {
                 startLevel = _ctx.startLevel,
-                actualColumnXPosition = _ctx.actualColumnXPosition,
                 movePlayerTo = _movePlayerTo,
-                playerFinishMoving = _playerFinishMoving
+                playerFinishMoving = _playerFinishMoving,
+                playerYPosition = _ctx.contentProvider.LevelConfig().GetPlayerYPosition,
+                playerOnColumnXOffset = _ctx.contentProvider.LevelConfig().GetPlayerOnColumnXOffset
             });
         }
     }

@@ -39,7 +39,7 @@ namespace CodeBase.Game.MainMenu
                 showStartMenu = _ctx.showStartMenu,
             };
             _pm = new MainMenuPm(mainMenuPmCtx);
-            AddUnsafe(_pm);
+            AddToDisposables(_pm);
         }
 
         private void CrateView()

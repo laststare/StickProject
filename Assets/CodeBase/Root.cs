@@ -31,7 +31,7 @@ namespace CodeBase
                 uiRoot = _ctx.uiRoot,
             };
             _rootEntity = new RootEntity(rootCtx);
-            AddUnsafe(_rootEntity);
+            AddToDisposables(_rootEntity);
         }
     }
 }

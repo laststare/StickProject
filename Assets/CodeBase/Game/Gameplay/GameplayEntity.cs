@@ -58,7 +58,7 @@ namespace CodeBase.Game.Gameplay
                 startGame = _ctx.startGame
             };
             _gameFlowPm = new GameFlowPm(gameFlowPmCtx);
-            AddUnsafe(_gameFlowPm);
+            AddToDisposables(_gameFlowPm);
         }
 
         private void CreateCameraEntity()
@@ -72,7 +72,7 @@ namespace CodeBase.Game.Gameplay
                 changeLevelFlowState = _changeLevelFlowState
             };
             _cameraEntity = new CameraEntity(cameraEntityCtx);
-            AddUnsafe(_cameraEntity);
+            AddToDisposables(_cameraEntity);
         }
 
         private void CreateScoreCounter()
@@ -87,10 +87,11 @@ namespace CodeBase.Game.Gameplay
                 showStartMenu = _ctx.showStartMenu,
                 columnIsReachable = _ctx.columnIsReachable,
                 nextColumnXPosition = _ctx.nextColumnXPosition,
-                dataSave = _ctx.dataSave
+                dataSave = _ctx.dataSave,
+                playerYPosition = _ctx.contentProvider.LevelConfig().GetPlayerYPosition
             };
             _scoreCounterEntity = new ScoreCounterEntity(scoreCounterEntityCtx);
-            AddUnsafe(_scoreCounterEntity);
+            AddToDisposables(_scoreCounterEntity);
         }
 
         private void CreatePlayerEntity()
@@ -108,7 +109,7 @@ namespace CodeBase.Game.Gameplay
                 changeLevelFlowState = _changeLevelFlowState
             };
             _playerEntity = new PlayerEntity(playerEntityCtx);
-            AddUnsafe(_playerEntity);
+            AddToDisposables(_playerEntity);
         }
 
         private void CreateStickEntity()
@@ -124,7 +125,7 @@ namespace CodeBase.Game.Gameplay
                 changeLevelFlowState = _changeLevelFlowState
             };
             _stickEntity = new StickEntity(stickEntityCtx);
-            AddUnsafe(_stickEntity);
+            AddToDisposables(_stickEntity);
         }
     }
 }
