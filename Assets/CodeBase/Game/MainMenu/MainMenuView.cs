@@ -17,6 +17,7 @@ namespace CodeBase.Game.MainMenu
         private Ctx _ctx;
 
         [SerializeField] private Button startGameBtn, restartGameBtn, backStartScreenBtn;
+        [SerializeField] private GameObject gameTitle;
 
         public void Init(Ctx ctx)
         {
@@ -51,6 +52,7 @@ namespace CodeBase.Game.MainMenu
         private void ShowStartScreen()
         {
             startGameBtn.gameObject.SetActive(true);
+            gameTitle.SetActive(true);
             HideFinishScreen();
         }
 
@@ -59,8 +61,12 @@ namespace CodeBase.Game.MainMenu
             restartGameBtn.gameObject.SetActive(true); 
             backStartScreenBtn.gameObject.SetActive(true);
         }
-        
-        private void HideStartScreen() => startGameBtn.gameObject.SetActive(false);
+
+        private void HideStartScreen()
+        {
+            gameTitle.SetActive(false);
+            startGameBtn.gameObject.SetActive(false);
+        }
 
         private void HideFinishScreen()
         {
