@@ -32,7 +32,7 @@ namespace CodeBase.Data
         public class ViewsContent
         { 
             public GameObject levelColumn;
-            public CameraView cameraView;
+            public Transform camera;
             public PlayerView playerView;
             public Transform stick;
             public RewardView rewardView;
@@ -48,7 +48,7 @@ namespace CodeBase.Data
         public MainMenuView MainMenuView() => UIViews.mainMenuView;
         public ScoreCounterView ScoreCounterView() => UIViews.scoreCounterView;
         public GameObject LevelColumn()  => Views.levelColumn;
-        public CameraView CameraView()  => Views.cameraView;
+        public Transform Camera()  => Views.camera;
         public PlayerView PlayerView()  => Views.playerView;
         public Transform Stick()  => Views.stick;
         public RewardView RewardView()  => Views.rewardView;

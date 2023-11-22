@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   columnOffset: 1
   minColumnDistance: 5
+  playerYPosition: 9.5
+  playerOnColumnXOffset: 0.5
+  cameraColumnXOffset: 4
