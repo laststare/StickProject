@@ -1,8 +1,5 @@
 ﻿using System;
-using CodeBase.Game.Gameplay.Camera;
-using CodeBase.Game.Gameplay.Player;
 using CodeBase.Game.Gameplay.ScoreCounter;
-using CodeBase.Game.Gameplay.Stick;
 using CodeBase.Game.MainMenu;
 using UnityEngine;
 
@@ -35,7 +32,7 @@ namespace CodeBase.Data
             public Transform camera;
             public Transform player;
             public Transform stick;
-            public RewardView rewardView;
+            public Transform reward;
         }
         
         [Serializable]
@@ -51,7 +48,7 @@ namespace CodeBase.Data
         public Transform Camera()  => Views.camera;
         public Transform Player()  => Views.player;
         public Transform Stick()  => Views.stick;
-        public RewardView RewardView()  => Views.rewardView;
+        public Transform Reward()  => Views.reward;
         public RewardConfig RewardConfig()  => Settings.rewardConfig;
         public LevelConfig LevelConfig() => Settings.levelConfig;
     }

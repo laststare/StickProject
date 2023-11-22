@@ -88,7 +88,6 @@ namespace CodeBase.Game.Gameplay
                 columnIsReachable = _ctx.columnIsReachable,
                 nextColumnXPosition = _ctx.nextColumnXPosition,
                 dataSave = _ctx.dataSave,
-                playerYPosition = _ctx.contentProvider.LevelConfig().GetPlayerYPosition
             };
             _scoreCounterEntity = new ScoreCounterEntity(scoreCounterEntityCtx);
             AddToDisposables(_scoreCounterEntity);

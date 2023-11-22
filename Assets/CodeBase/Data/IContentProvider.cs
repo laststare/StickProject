@@ -1,4 +1,3 @@
-using CodeBase.Game.Gameplay.Player;
 using CodeBase.Game.Gameplay.ScoreCounter;
 using CodeBase.Game.MainMenu;
 using UnityEngine;
@@ -13,7 +12,7 @@ namespace CodeBase.Data
         public Transform Camera();
         public Transform Player();
         public Transform Stick();
-        public RewardView RewardView();
+        public Transform Reward();
         public RewardConfig RewardConfig();
         public LevelConfig LevelConfig();
     }
