@@ -16,7 +16,6 @@ namespace CodeBase.Game.Gameplay.Camera
             public IReadOnlyReactiveProperty<float> actualColumnXPosition;
             public IReadOnlyReactiveTrigger startLevel;
             public ReactiveEvent<LevelFlowState> changeLevelFlowState;
-            public float cameraColumnXOffset;
         }
 
         private readonly Ctx _ctx;
@@ -27,8 +26,8 @@ namespace CodeBase.Game.Gameplay.Camera
         public CameraPm(Ctx ctx)
         {
             _ctx = ctx;
-            _cameraColumnXOffset = _ctx.cameraColumnXOffset;
-            _camera = Object.Instantiate(_ctx.contentProvider.Camera()).transform;
+            _cameraColumnXOffset = _ctx.contentProvider.LevelConfig().GetCameraColumnXOffset;
+            _camera = Object.Instantiate(_ctx.contentProvider.Camera());
             
             AddToDisposables(_ctx.levelFlowState.Subscribe(x =>
             {

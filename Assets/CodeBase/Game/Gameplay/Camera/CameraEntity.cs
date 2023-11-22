@@ -34,7 +34,6 @@ namespace CodeBase.Game.Gameplay.Camera
                 actualColumnXPosition = _ctx.actualColumnXPosition,
                 levelFlowState = _ctx.levelFlowState,
                 changeLevelFlowState = _ctx.changeLevelFlowState,
-                cameraColumnXOffset = _ctx.contentProvider.LevelConfig().GetCameraColumnXOffset,
                 contentProvider = _ctx.contentProvider,
                 startLevel = _ctx.startLevel,
             };

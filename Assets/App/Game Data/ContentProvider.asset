@@ -15,7 +15,7 @@ MonoBehaviour:
   views:
     levelColumn: {fileID: 1658101390224254136, guid: 07fac9853a472434f99f61ad8d4a5e45, type: 3}
     camera: {fileID: 8028528650516572960, guid: a52c0c12e968a41ba934997429e80eda, type: 3}
-    playerView: {fileID: -2425771021034557161, guid: 430dcfb3ea080452f89bef4f6b98987e, type: 3}
+    player: {fileID: 5854113184258143814, guid: 430dcfb3ea080452f89bef4f6b98987e, type: 3}
     stick: {fileID: 3147882543214425029, guid: f8dee52a1e08f40499b22756d8d59aef, type: 3}
     rewardView: {fileID: 6711420796817572596, guid: 84cd3efe70cec4b67a62c85a9dc9d9fb, type: 3}
   uiViews:

@@ -11,7 +11,7 @@ namespace CodeBase.Data
         public ScoreCounterView ScoreCounterView();
         public GameObject LevelColumn();
         public Transform Camera();
-        public PlayerView PlayerView();
+        public Transform Player();
         public Transform Stick();
         public RewardView RewardView();
         public RewardConfig RewardConfig();

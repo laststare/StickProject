@@ -17,3 +17,4 @@ MonoBehaviour:
   playerYPosition: 9.5
   playerOnColumnXOffset: 0.5
   cameraColumnXOffset: 4
+  destinationOffset: 1
