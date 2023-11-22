@@ -19,7 +19,6 @@ namespace CodeBase.Game.Gameplay.Camera
 
         private readonly Ctx _ctx;
         private CameraPm _pm;
-        private CameraView _view;
 
         public CameraEntity(Ctx ctx)
         {
