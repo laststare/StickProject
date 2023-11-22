@@ -33,7 +33,7 @@ namespace CodeBase.Game.Gameplay.Player
             _columnOffset = _ctx.contentProvider.LevelConfig().GetColumnOffset;
             _playerOnColumnXOffset = _ctx.contentProvider.LevelConfig().GetPlayerOnColumnXOffset;
             _destinationOffset = _ctx.contentProvider.LevelConfig().GetDestinationOffset;
-            _player = Object.Instantiate(_ctx.contentProvider.Player()).transform;
+            _player = Object.Instantiate(_ctx.contentProvider.Player());
 
             AddToDisposables(_ctx.startLevel.Subscribe(() =>
             {

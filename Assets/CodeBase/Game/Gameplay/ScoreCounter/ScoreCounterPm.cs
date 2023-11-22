@@ -67,7 +67,7 @@ namespace CodeBase.Game.Gameplay.ScoreCounter
         private void SpawnRewardItem()
         {
             var reward = Object.Instantiate(_ctx.contentProvider.Reward(),
-                new Vector3(_ctx.nextColumnXPosition.Value, _playerYPosition, 0), Quaternion.identity).transform;
+                new Vector3(_ctx.nextColumnXPosition.Value, _playerYPosition, 0), Quaternion.identity);
             
             reward.DOMoveY(reward.position.y + 3, 2);
             var rewardText = reward.transform.GetChild(0).GetComponent<TMP_Text>();
